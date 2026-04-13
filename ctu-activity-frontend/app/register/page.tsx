@@ -3,8 +3,8 @@ import Link from 'next/link'
 import RegisterForm from '@/components/auth/register-form'
 
 export const metadata: Metadata = {
-  title: 'Tạo Tài Khoản | SAMS-CTU',
-  description: 'Tạo tài khoản SAMS mới',
+  title: 'Tạo Tài Khoản | LCHSVCT-CTU',
+  description: 'Tạo tài khoản LCHSVCT mới',
 }
 
 export default function RegisterPage() {
@@ -35,13 +35,13 @@ export default function RegisterPage() {
         <div className="relative z-10 flex flex-col h-full justify-between">
           {/* Logo */}
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">SAMS</h2>
+            <h2 className="text-3xl font-bold tracking-tight">LCHSVCT</h2>
           </div>
 
           {/* Main Heading */}
           <div className="space-y-5 max-w-md">
             <h1 className="text-5xl font-extrabold leading-tight">
-              Tham gia SAMS ngay hôm nay
+              Tham gia LCHSVCT ngay hôm nay
             </h1>
             <p className="text-lg text-blue-100 leading-relaxed">
               Tạo tài khoản của bạn để khám phá và tham gia các hoạt động sinh
@@ -89,7 +89,7 @@ export default function RegisterPage() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              SAMS
+              LCHSVCT
             </div>
           </div>
 

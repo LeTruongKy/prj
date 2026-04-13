@@ -3,8 +3,8 @@ import Link from 'next/link'
 import LoginForm from '@/components/auth/login-form'
 
 export const metadata: Metadata = {
-  title: 'Sign In | SAMS-CTU',
-  description: 'Sign in to your SAMS account',
+  title: 'Sign In | LCHSVCT-CTU',
+  description: 'Sign in to your LCHSVCT-CTU account',
 }
 
 export default function LoginPage() {
@@ -32,13 +32,13 @@ export default function LoginPage() {
                 <path d="M12 14l6.16-3.422A12.083 12.083 0 0121 12.75c0 1.194-.232 2.333-.654 3.375L12 21l-8.346-4.875A12.054 12.054 0 013 12.75c0-1.194.232-2.333.654-3.375L12 14z" opacity="0.6" />
               </svg>
             </div>
-            <span className="text-2xl font-bold tracking-tight">SAMS</span>
+            <span className="text-2xl font-bold tracking-tight">LCHSVCT</span>
           </div>
 
           {/* Middle - Hero Text */}
           <div className="space-y-5 max-w-lg">
             <h1 className="text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight">
-              Welcome to SAMS
+              Welcome to LCHSVCT
             </h1>
             <p className="text-lg text-blue-100 leading-relaxed max-w-md">
               Nền tảng quản lý hoạt động sinh viên hiện đại. Tham gia, tích lũy

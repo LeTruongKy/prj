@@ -118,10 +118,10 @@ export default function FeaturedActivities({ activities }: FeaturedActivitiesPro
 
                 {/* Points Badge */}
                 <div className="absolute bottom-3 right-3 z-10">
-                  <div className="bg-white/90 backdrop-blur-sm text-orange-600 text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+                  {/* <div className="bg-white/90 backdrop-blur-sm text-orange-600 text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
                     <span>⭐</span>
                     <span>+10 Điểm RL</span>
-                  </div>
+                  </div> */}
                 </div>
                 {console.log('activity',activity)}
                 {activity.poster_url ? (

@@ -46,7 +46,7 @@ export default function Navbar() {
               <span className="text-primary-foreground font-bold text-lg">S</span>
             </div>
             <span className="text-xl font-bold text-foreground hidden sm:inline">
-              SAMS
+              LCHSVCT
             </span>
           </Link>
 
