@@ -14,11 +14,6 @@ export default function RegisterPage() {
       <div className="hidden lg:flex lg:w-[50%] flex-col justify-between p-10 text-white relative overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img
-            src="/13.jpg"
-            alt="Students collaborating"
-            className="w-full h-full object-contain"
-          />
           <div
             className="absolute inset-0"
             style={{

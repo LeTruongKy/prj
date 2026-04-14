@@ -165,6 +165,9 @@ export const activityColumns = (
                             <DropdownMenuItem onClick={() => onUpdateStatus(activityId as number, "PUBLISHED")} disabled={activity.status === "PUBLISHED"}>
                                 Duyệt & Đăng tải
                             </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onUpdateStatus(activityId as number, "COMPLETED")} disabled={activity.status === "COMPLETED"}>
+                                Hoàn thành
+                            </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => onUpdateStatus(activityId as number, "CANCELLED")} className="text-red-600" disabled={activity.status === "CANCELLED"}>
                                 Hủy hoạt động
                             </DropdownMenuItem>

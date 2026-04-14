@@ -2,12 +2,18 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import LoginForm from '@/components/auth/login-form'
 
+export const dynamic = 'force-dynamic' 
+
 export const metadata: Metadata = {
   title: 'Sign In | LCHSVCT-CTU',
   description: 'Sign in to your LCHSVCT-CTU account',
 }
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }: {
+  searchParams: { return?: string }
+}) {
+  const params = await searchParams 
+  const returnUrl = params?.return || null
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-white overflow-hidden">
       {/* LEFT SIDE - HERO SECTION */}
@@ -50,11 +56,11 @@ export default function LoginPage() {
           <div className="space-y-6">
             {/* Hero Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 max-w-md">
-              <img
+              {/* <img
                 src="/8.jpg"
                 alt="Students collaborating"
                 className="w-full h-52 object-cover"
-              />
+              /> */}
               {/* Overlay Badge */}
               <div className="absolute bottom-3 left-3 bg-white/15 backdrop-blur-xl rounded-xl px-4 py-2 border border-white/20 flex items-center gap-2">
                 <span className="text-sm font-semibold text-white">
@@ -132,7 +138,7 @@ export default function LoginPage() {
           {/* Card Container */}
           <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/60 p-8 border border-gray-100">
             {/* Login Form - preserves all original functionality */}
-            <LoginForm />
+            <LoginForm returnUrl={returnUrl}/>
           </div>
 
           {/* Divider */}

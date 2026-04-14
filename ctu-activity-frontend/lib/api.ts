@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosError } from 'axios'
 import { useApiStatusStore } from './api-status-store'
 import { toast } from '@/hooks/use-toast'
 
-const API_BASE_URL = 'http://localhost:8080'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BACKEND_URL
 
 // Create axios instance
 export const apiClient: AxiosInstance = axios.create({

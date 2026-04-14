@@ -39,6 +39,9 @@ export interface IActivity {
     registration_count?: number;
     similarity_score?: number;
     tags?: any[];
+    // ✅ QR Code URL for check-in
+    qrCodeUrl?: string | null;
+    qr_code_url?: string | null;
 }
 
 export interface IActivityData {

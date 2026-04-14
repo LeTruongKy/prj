@@ -213,6 +213,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     // console.log('[Profile] Component mounted, checking hydration status...', { isHydrated })
+    // console.log('[Profile] User from auth store:', userInterests)
     // if (!isHydrated) return
     fetchProfileData()
   }, [])

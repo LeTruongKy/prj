@@ -12,6 +12,9 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
+interface LoginFormProps {
+  returnUrl?: string | null
+}
 
 // Zod validation schema
 const loginSchema = z.object({
@@ -28,7 +31,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
-export default function LoginForm() {
+export default function LoginForm({ returnUrl }: LoginFormProps) {
   const router = useRouter()
   const { login, isLoading, error, clearError } = useAuthStore()
   const [showPassword, setShowPassword] = useState(false)
@@ -48,7 +51,11 @@ export default function LoginForm() {
     try {
       await login(data.email, data.password)
       // Redirect to activities on success
-      router.push('/activities')
+      if (returnUrl) {
+      router.push(decodeURIComponent(returnUrl))
+    } else {
+      router.push('/')
+    }
     } catch (error) {
       // Error is already stored in the store
       console.error('Login error:', error)

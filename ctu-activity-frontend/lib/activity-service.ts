@@ -123,7 +123,6 @@ export async function getActivities(
     expand: filters?.expand || 'category,unit',
     ...filters,
   }
-
   const response = await apiClient.get('/activities', { params })
   return response.data
 }
@@ -175,6 +174,7 @@ export async function getUnits(filters?: {
 }) {
   const params: any = { expand: 'children', ...filters }
   const response = await apiClient.get('/units', { params })
+
   return response.data
 }
 

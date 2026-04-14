@@ -448,6 +448,7 @@ export default function ActivityDetailPage({
                   <Button disabled className="w-full rounded-xl h-auto py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-50 font-semibold text-sm" variant="outline">
                     ✓ Đã đăng ký thành công
                   </Button>
+
                   <Button
                     onClick={() => setShowProofDialog(true)}
                     variant="outline"

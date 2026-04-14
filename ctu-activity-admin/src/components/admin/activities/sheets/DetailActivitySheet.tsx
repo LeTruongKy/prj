@@ -9,7 +9,7 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Users, Loader2, X, FileSpreadsheet } from "lucide-react";
+import { Calendar, MapPin, Users, Loader2, X, FileSpreadsheet, Smartphone } from "lucide-react";
 import { IActivity } from "@/types/activity.type";
 import { ParticipantsTable } from "../table/ParticipantsTable";
 import { formatDate } from "@/utils/formateDate";
@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ActivityService } from "@/services/activityService";
 import { toast } from "sonner";
+import { QrModal } from "../modals/QrModal";
 
 interface DetailActivitySheetProps {
     open: boolean;
@@ -37,6 +38,7 @@ const statusColorMap: Record<string, { bgColor: string; textColor: string }> = {
 
 export function DetailActivitySheet({ open, onOpenChange, activity, loading }: DetailActivitySheetProps) {
     const [exporting, setExporting] = useState(false);
+    const [qrModalOpen, setQrModalOpen] = useState(false);
 
     const getStatusColor = (status: string) => {
         const colors = statusColorMap[status] || statusColorMap.DRAFT;
@@ -165,8 +167,8 @@ export function DetailActivitySheet({ open, onOpenChange, activity, loading }: D
                                     </div>
                                 </div>
 
-                                {/* Export Report Button */}
-                                <div className="pt-4 border-t">
+                                {/* Export Report and QR Code Buttons */}
+                                <div className="pt-4 border-t space-y-3">
                                     <Button
                                         onClick={handleExportReport}
                                         disabled={exporting}
@@ -184,6 +186,19 @@ export function DetailActivitySheet({ open, onOpenChange, activity, loading }: D
                                                 Xuất danh sách tham gia (Excel)
                                             </>
                                         )}
+                                    </Button>
+
+                                    <Button
+                                        onClick={() =>{
+                                            console.log('Opening QR Modal with URL:', activity.qrCodeUrl);
+                                             setQrModalOpen(true)
+                                             console.log('QR Modal open state:', qrModalOpen)
+                                        }}
+                                        variant="outline"
+                                        className="w-full gap-2 border-blue-300 text-blue-700 hover:bg-blue-50 hover:text-blue-800"
+                                    >
+                                        <Smartphone className="h-4 w-4" />
+                                        📱 Hiển thị QR Code
                                     </Button>
                                 </div>
                             </CardContent>
@@ -231,6 +246,14 @@ export function DetailActivitySheet({ open, onOpenChange, activity, loading }: D
                     </div>
                 )}
             </SheetContent>
+
+            {/* QR Code Modal */}
+            <QrModal
+                open={qrModalOpen}
+                onOpenChange={setQrModalOpen}
+                qrCodeUrl={activity?.qrCodeUrl}
+                activityTitle={activity?.title || "Hoạt động"}
+            />
         </Sheet>
     );
 }

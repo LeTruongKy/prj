@@ -40,16 +40,16 @@ export default function AiRecommendationsPage() {
 
   useEffect(() => {
     console.log('[AI Recs] Component mounted. Checking authentication...', isAuthenticated , user)
-    if (isAuthenticated && user?.user.user_id) {
+    if (isAuthenticated) {
       fetchRecommendations()
     } else {
       setLoading(false)
       setError('Please log in to see personalized recommendations')
     }
-  }, [isAuthenticated, user?.user.user_id])
+  }, [isAuthenticated])
 
   const fetchRecommendations = async () => {
-    if (!user?.user.user_id) return
+    // if (!user?.id) return
 
     setLoading(true)
     setError(null)
@@ -57,7 +57,7 @@ export default function AiRecommendationsPage() {
     try {
       console.log('[AI Recs] Fetching recommendations for user:', user.id)
       const response: AIRecommendationResponse = await privateAxios.get(
-        `/activities/recommendations/${user.user.user_id}?limit=10`
+        `/activities/recommendations/${user.id}?limit=10`
       )
       setRecommendations(response.data.data.recommendations || [])
     } catch (err: any) {
