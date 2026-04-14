@@ -75,6 +75,8 @@ export default function Home() {
   useEffect(() => {
     if (!isHydrated) return
 
+    console.log('Home component hydrated. Authenticated:', isAuthenticated, 'User:', user)
+    
     if (isAuthenticated) {
       fetchHeroActivities()
       fetchCategories()
@@ -91,7 +93,6 @@ export default function Home() {
         status: 'PUBLISHED',
         expand: 'category,unit'
       })
-      console.log('Fetched hero activities response:', response)
 
       // Extract from nested structure: response.data.data contains the array
       const activitiesData = response.data?.data || []

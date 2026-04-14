@@ -14,6 +14,8 @@ from app.models.database_models import (
     Tag,
     Activity,
     ActivityRegistration,
+    UserActivitySchedule,
+    ActivityCriteria,
 )
 from app.config import settings
 import logging
@@ -175,29 +177,28 @@ class RecommendationService:
 
     def _get_user_activity_history(self, user_id: str) -> List[int]:
         """
-        Get list of activities user has verified participation for (user history)
-        Used for collaborative filtering
+        Get list of activities user has registered for (user history)
+        Used to exclude already registered activities
         
         Args:
             user_id: User UUID
             
         Returns:
-            List of activity IDs user has verified participation in
+            List of activity IDs user has registered for
         """
         try:
-            # Query verified registrations only
+            # Query all registrations (exclude activities user already registered)
             registrations = self.db.query(ActivityRegistration).filter(
-                ActivityRegistration.userId == user_id,
-                ActivityRegistration.proofStatus == "VERIFIED"
+                ActivityRegistration.userId == user_id
             ).all()
             
             activity_ids = [reg.activityId for reg in registrations]
             
             if activity_ids:
-                logger.info(f"User {user_id} has joined {len(activity_ids)} activities")
+                logger.info(f"User {user_id} has registered for {len(activity_ids)} activities")
                 return activity_ids
             else:
-                logger.info(f"User {user_id} has no activity history")
+                logger.info(f"User {user_id} has no activity registrations")
                 return []
                 
         except Exception as e:
@@ -206,18 +207,20 @@ class RecommendationService:
 
     def _build_activity_co_occurrence_matrix(self) -> Dict[int, Dict[int, float]]:
         """
-        Build activity co-occurrence matrix from user registrations
+        Build activity co-occurrence matrix from verified user registrations
         If many users join both activity A and B, they are considered similar
         
         Returns:
             Dictionary: {activity_id: {similar_activity_id: similarity_score}}
         """
         try:
-            # Query all registrations for collaborative filtering
-            registrations = self.db.query(ActivityRegistration).all()
+            # Query verified registrations for collaborative filtering
+            registrations = self.db.query(ActivityRegistration).filter(
+                ActivityRegistration.proofStatus == "VERIFIED"
+            ).all()
             
             if not registrations:
-                logger.warning("No registrations found for collaborative filtering")
+                logger.warning("No verified registrations found for collaborative filtering")
                 return {}
             
             # Build user -> activities mapping
@@ -313,6 +316,68 @@ class RecommendationService:
         """
         return min(max(score, 0.0), 1.0)
 
+    def _check_schedule_conflict(self, user_id: str, activity: Activity) -> bool:
+        """
+        Check if activity conflicts with user's scheduled activities
+        
+        Args:
+            user_id: User UUID
+            activity: Activity object to check
+            
+        Returns:
+            True if conflict exists, False otherwise
+        """
+        try:
+            # Get user's scheduled activities
+            user_schedules = self.db.query(UserActivitySchedule).filter(
+                UserActivitySchedule.userId == user_id
+            ).all()
+            
+            if not user_schedules:
+                return False
+            
+            # Check for time overlap with any scheduled activity
+            for schedule in user_schedules:
+                # Conflict if: activity.startTime < schedule.endTime AND activity.endTime > schedule.startTime
+                if (activity.startTime < schedule.endTime and 
+                    activity.endTime > schedule.startTime):
+                    logger.info(f"Schedule conflict detected for user {user_id} with activity {activity.id}")
+                    return True
+            
+            return False
+        except Exception as e:
+            logger.warning(f"Error checking schedule conflict for user {user_id}: {str(e)}")
+            return False
+
+    def _calculate_criteria_bonus(self, user_id: str, activity: Activity) -> float:
+        """
+        Calculate bonus score based on activity criteria matching
+        
+        Args:
+            user_id: User UUID
+            activity: Activity object
+            
+        Returns:
+            Bonus score (0.0-0.3)
+        """
+        if activity.criteriaGroupId is None:
+            return 0.0
+        
+        try:
+            # Check if activity has criteria requirements
+            criteria = self.db.query(ActivityCriteria).filter(
+                ActivityCriteria.activityId == activity.id
+            ).first()
+            
+            if criteria is not None:
+                # Activity has criteria, apply small bonus
+                return 0.1
+            else:
+                return 0.0
+        except Exception as e:
+            logger.warning(f"Error calculating criteria bonus: {str(e)}")
+            return 0.0
+
     def _hybrid_score(
         self,
         content_score: float,
@@ -393,12 +458,22 @@ class RecommendationService:
             co_occurrence_matrix = self._build_activity_co_occurrence_matrix()
             
             # ========== HYBRID SCORING ==========
-            # Step 6: Get all activities and calculate hybrid scores
-            all_activities = self.db.query(Activity).all()
+            # Step 6: Get all approved activities and calculate hybrid scores
+            all_activities = self.db.query(Activity).filter(
+                Activity.status == "PUBLISHED"
+            ).all()
             
             hybrid_scores = {}
             for activity in all_activities:
                 activity_id = activity.id
+                
+                # Skip if user already registered for this activity
+                if activity_id in user_activity_history:
+                    continue
+                
+                # Skip if schedule conflict with verified activities
+                if self._check_schedule_conflict(user_id, activity):
+                    continue
                 
                 # Get content-based score (default 0 if not found)
                 content_score = content_scores.get(activity_id, 0.0)
@@ -410,8 +485,12 @@ class RecommendationService:
                     co_occurrence_matrix
                 )
                 
-                # Calculate hybrid score with randomness
-                final_score = self._hybrid_score(content_score, collaborative_score)
+                # Calculate criteria bonus
+                criteria_bonus = self._calculate_criteria_bonus(user_id, activity)
+                
+                # Calculate hybrid score with randomness and apply bonus
+                final_score = self._hybrid_score(content_score, collaborative_score) + criteria_bonus
+                final_score = self._normalize_score(final_score)
                 
                 # Filter by minimum similarity
                 if final_score >= settings.MIN_SIMILARITY_SCORE:

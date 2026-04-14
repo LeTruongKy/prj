@@ -82,8 +82,8 @@ export default function ActivityDetailPage({
       try {
         setLoading(true)
         const data = await getActivityById(parseInt(resolvedParams.id))
+        console.log('Fetched activity details:321321', data)
         const activityData = data.data?.activity || data
-        console.log('Fetched activity data:', activityData)
         setActivity(activityData)
         setError(null)
 

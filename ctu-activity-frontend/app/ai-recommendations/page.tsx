@@ -55,9 +55,8 @@ export default function AiRecommendationsPage() {
     setError(null)
 
     try {
-      console.log('[AI Recs] Fetching recommendations for user:', user.id)
       const response: AIRecommendationResponse = await privateAxios.get(
-        `/activities/recommendations/${user.id}?limit=10`
+        `/activities/recommendations/${user?.id || user?.user?.user_id}?limit=10`
       )
       setRecommendations(response.data.data.recommendations || [])
     } catch (err: any) {

@@ -13,10 +13,28 @@ export async function checkInViaQr(
   timestamp: number,
   signature: string,
 ) {
+  
+async function trackCheckInInteractionInternal(activityId: number) {
+  try {
+    await apiClient.post('/user-interactions/check-in', {
+      activityId,
+    });
+  } catch (error) {
+    // Silently fail - don't break the main request
+    console.debug('[Tracking] checkin tracking error:', error);
+  }
+}
   const response = await apiClient.post('/registrations/check-in', {
     activityId,
     timestamp,
     signature,
   })
+  if (response) {
+      console.log('Tracking register interaction for activity:', activityId);
+      trackCheckInInteractionInternal(activityId).catch((error) => {
+        // Silently log, don't break response
+        console.debug('[Registration Tracking] Failed to track register:', error.message);
+      });
+    }
   return response.data
 }

@@ -95,3 +95,35 @@ class ActivityRegistration(Base):
     registeredAt = Column(DateTime, default=datetime.utcnow)
 
     activity = relationship("Activity")
+
+
+class UserActivitySchedule(Base):
+    """
+    UserActivitySchedule table model
+    Tracks user's activity schedule for conflict detection
+    """
+    __tablename__ = "user_activity_schedule"
+
+    id = Column(Integer, primary_key=True, index=True)
+    userId = Column(String(36), nullable=False)  # UUID stored as string
+    activityId = Column(Integer, ForeignKey("activities.id", ondelete="CASCADE"), nullable=False)
+    startTime = Column(DateTime, nullable=False)
+    endTime = Column(DateTime, nullable=False)
+    createdAt = Column(DateTime, default=datetime.utcnow)
+
+    activity = relationship("Activity")
+
+
+class ActivityCriteria(Base):
+    """
+    ActivityCriteria table model
+    Tracks criteria requirements for activities
+    """
+    __tablename__ = "activity_criteria"
+
+    id = Column(Integer, primary_key=True, index=True)
+    activityId = Column(Integer, ForeignKey("activities.id", ondelete="CASCADE"), nullable=False)
+    criterionId = Column(Integer, nullable=False)
+    createdAt = Column(DateTime, default=datetime.utcnow)
+
+    activity = relationship("Activity")

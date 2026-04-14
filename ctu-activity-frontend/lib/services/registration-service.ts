@@ -66,7 +66,18 @@ export async function registerForActivity(
       activityId,
       skipConflictCheck: skipConflictCheck || false,
     })
-    return response.data.data || response.data
+    const result = response.data.data || response.data;
+    console.log('Registration response:', result);
+    // ✅ ADD: Track REGISTER interaction (fire-and-forget)
+    if (result.message == "User registered activities retrieved successfully") {
+      console.log('Tracking register interaction for activity:', activityId);
+      trackRegisterInteractionInternal(activityId).catch((error) => {
+        // Silently log, don't break response
+        console.debug('[Registration Tracking] Failed to track register:', error.message);
+      });
+    }
+    
+    return result;
   } catch (error) {
     console.error('Failed to register for activity:', error)
     throw error
@@ -148,3 +159,14 @@ export function formatConflictDisplay(conflict: Conflict): string {
   
   return `${conflict.title} (${startTime} - ${endTime})`
 }
+
+// ============================================================
+// USER INTERACTION TRACKING (for AI recommendations)
+// ============================================================
+
+/**
+ * Internal: Track REGISTER interaction
+ * Called after successful registration
+ * Weight: +3 per tag (if activity has tags)
+ */
+

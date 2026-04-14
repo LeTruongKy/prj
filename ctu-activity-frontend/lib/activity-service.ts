@@ -131,6 +131,13 @@ export async function getActivityById(id: number) {
   const response = await apiClient.get(`/activities/${id}`, {
     params: { expand: 'category,unit,registrations' },
   })
+  console.log('Fetched activity details:', response.data)
+  // ✅ ADD: Track VIEW interaction (fire-and-forget)
+  trackViewInteraction(id).catch((error) => {
+    // Silently log, don't break response
+    console.debug('[Activity Tracking] Failed to track view:', error.message);
+  });
+  
   return response.data
 }
 
@@ -183,6 +190,14 @@ export async function registerActivity(activityId: number) {
   const response = await apiClient.post('/registrations', {
     activityId,
   })
+  console.log('Registration response:', response.data);
+  if (response) {
+      console.log('Tracking register interaction for activity:', activityId);
+      trackRegisterInteractionInternal(activityId).catch((error) => {
+        // Silently log, don't break response
+        console.debug('[Registration Tracking] Failed to track register:', error.message);
+      });
+    }
   return response.data
 }
 
@@ -262,4 +277,26 @@ export async function verifyProof(
     ...(feedback && { feedback }),
   })
   return response.data
+}
+
+async function trackViewInteraction(activityId: number) {
+  try {
+    await apiClient.post('/user-interactions/view', {
+      activityId,
+    });
+  } catch (error) {
+    // Silently fail - don't break the main request
+    console.debug('[Tracking] View tracking error:', error);
+  }
+}
+
+async function trackRegisterInteractionInternal(activityId: number) {
+  try {
+    await apiClient.post('/user-interactions/register', {
+      activityId,
+    });
+  } catch (error) {
+    // Silently fail - don't break the main request
+    console.debug('[Tracking] Register tracking error:', error);
+  }
 }
