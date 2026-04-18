@@ -17,6 +17,7 @@ import { Settings2, Search, Filter, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreateActivitySheet } from "../sheets/CreateActivitySheet";
 import { DetailActivitySheet } from "../sheets/DetailActivitySheet";
+import { EditActivitySheet } from "../sheets/EditActivitySheet";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -46,6 +47,10 @@ export function ActivitiesTable() {
     const [selectedActivity, setSelectedActivity] = React.useState<IActivity | null>(null);
     const [loadingDetail, setLoadingDetail] = React.useState(false);
 
+    // Edit Sheet State
+    const [editSheetOpen, setEditSheetOpen] = React.useState(false);
+    const [activityToEdit, setActivityToEdit] = React.useState<IActivity | null>(null);
+
     const fetchActivities = async () => {
         setLoading(true);
         try {
@@ -66,6 +71,11 @@ export function ActivitiesTable() {
         setSelectedActivity(activity);
         setLoadingDetail(false);
         setDetailSheetOpen(true);
+    };
+
+    const handleEditActivity = (activity: IActivity) => {
+        setActivityToEdit(activity);
+        setEditSheetOpen(true);
     };
 
     const handleDelete = async (id: number) => {
@@ -102,7 +112,7 @@ export function ActivitiesTable() {
 
     const table = useReactTable({
         data: activityList,
-        columns: activityColumns(handleEdit, handleDelete, handleUpdateStatus),
+        columns: activityColumns(handleEdit, handleDelete, handleUpdateStatus, handleEditActivity),
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
@@ -236,6 +246,14 @@ export function ActivitiesTable() {
                 onOpenChange={setDetailSheetOpen}
                 activity={selectedActivity}
                 loading={loadingDetail}
+            />
+
+            {/* Edit Activity Sheet */}
+            <EditActivitySheet
+                open={editSheetOpen}
+                onOpenChange={setEditSheetOpen}
+                activity={activityToEdit}
+                onActivityUpdated={fetchActivities}
             />
         </div>
     );

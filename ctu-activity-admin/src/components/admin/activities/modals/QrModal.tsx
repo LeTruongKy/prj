@@ -66,6 +66,7 @@ export function QrModal({
 
   const handleDownloadQr = () => {
     const canvas = document.querySelector('canvas')
+    console.log('Canvas element for QR code:', canvas)
     if (!canvas) {
       toast.error('Không thể tải QR code')
       return
@@ -145,14 +146,14 @@ export function QrModal({
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4 border-t">
-            <Button
+            {/* <Button
               onClick={handleDownloadQr}
               variant="outline"
               className="flex-1"
             >
               <Download className="w-4 h-4 mr-2" />
               Tải QR
-            </Button>
+            </Button> */}
             <Button
               onClick={() => onOpenChange(false)}
               className="flex-1"

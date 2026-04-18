@@ -1,5 +1,11 @@
 import apiClient from './api'
 
+export interface Criterion {
+  criterion_id: number
+  name: string
+  description?: string
+}
+
 export interface Activity {
   activity_id: number
   title: string
@@ -20,6 +26,7 @@ export interface Activity {
   max_participants: number
   registration_count: number
   status: string
+  criteria?: Criterion[]
   approvedBy?: {
     user_id: string
     fullName: string

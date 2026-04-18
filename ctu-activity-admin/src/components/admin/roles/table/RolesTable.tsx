@@ -215,7 +215,8 @@ export function RolesTable() {
 
           <Button
             onClick={() => handleOpenCreateModal()}
-            className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer transition-all duration-300"
+            className="text-white cursor-pointer transition-all duration-300 hover:opacity-90"
+            style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))', boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)' }}
           >
             + Thêm vai trò
           </Button>

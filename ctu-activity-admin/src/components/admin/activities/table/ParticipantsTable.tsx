@@ -52,6 +52,7 @@ export function ParticipantsTable({ activityId }: ParticipantsTableProps) {
     const fetchParticipants = React.useCallback(async () => {
         setLoading(true);
         try {
+            console.log("Fetching participants for activityId:", activityId);
             const res = await RegistrationService.CallGetActivityParticipants(activityId);
             if (res?.statusCode === 200 && res.data) {
                 setParticipants(res.data.data || []);
@@ -68,7 +69,7 @@ export function ParticipantsTable({ activityId }: ParticipantsTableProps) {
         setVerifyingRegistration({ id: registrationId, action });
         setVerifyDialogOpen(true);
     };
-
+    
     const confirmVerify = async () => {
         if (!verifyingRegistration) return;
 
@@ -76,9 +77,9 @@ export function ParticipantsTable({ activityId }: ParticipantsTableProps) {
             const payload: IVerifyProofPayload = {
                 action: verifyingRegistration.action,
             };
-
-            await RegistrationService.CallVerifyProof(verifyingRegistration.id, payload);
-
+            
+            const response = await RegistrationService.CallVerifyProof(verifyingRegistration.id, payload);
+            
             toast.success(
                 verifyingRegistration.action === 'VERIFIED'
                     ? 'Đã phê duyệt minh chứng'

@@ -5,6 +5,12 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
+interface Criterion {
+  criterion_id: number
+  name: string
+  description?: string
+}
+
 interface RecommendedActivity {
   id: number
   title: string
@@ -15,6 +21,7 @@ interface RecommendedActivity {
   startTime: string
   endTime: string
   status: string
+  criteria?: Criterion[]
 }
 
 interface AiRecommendationsProps {
@@ -102,10 +109,30 @@ export default function AiRecommendations({ recommendations }: AiRecommendations
                     )}
                   </div>
 
+                  {/* Criteria Badges */}
+                  {rec.criteria && rec.criteria.length > 0 && (
+                    <div className="mb-4 pb-4 border-b border-gray-200">
+                      <div className="flex flex-wrap gap-2">
+                        {rec.criteria.slice(0, 2).map((criterion) => (
+                          <span
+                            key={criterion.criterion_id}
+                            className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 truncate"
+                          >
+                            {criterion.name}
+                          </span>
+                        ))}
+                        {rec.criteria.length > 2 && (
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700">
+                            +{rec.criteria.length - 2}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Register Button */}
-                  <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                  <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl hover:shadow-md transition-all text-sm shadow-sm">
                     <span>Xem Chi Tiết</span>
-                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </CardContent>
               </Card>

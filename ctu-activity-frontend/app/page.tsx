@@ -16,6 +16,10 @@ import FeaturedActivities from '@/components/dashboard/featured-activities'
 import ProgressSection from '@/components/dashboard/progress-section'
 import CategoriesSection from '@/components/dashboard/categories-section'
 import RecommendationsSection from '@/components/dashboard/recommendations-section'
+import StatisticsSection from '@/components/dashboard/statistics-section'
+import OrganizationSection from '@/components/dashboard/organization-section'
+import TestimonialsSection from '@/components/dashboard/testimonials-section'
+import AboutSection from '@/components/dashboard/about-section'
 
 interface ActivityData {
   id: number | string
@@ -27,6 +31,7 @@ interface ActivityData {
   end_date?: string
   location?: string
   image?: string | null
+  poster_url?: string | null
   participant_count?: number
   status?: string
 }
@@ -89,17 +94,27 @@ export default function Home() {
     try {
       setLoadingHero(true)
       // Match API call from activities/page.tsx
-      const response = await getActivities(1, 3, {
+      const response = await getActivities(1, 100, {
         status: 'PUBLISHED',
         expand: 'category,unit'
       })
-
       // Extract from nested structure: response.data.data contains the array
       const activitiesData = response.data?.data || []
       const activityList = Array.isArray(activitiesData) ? activitiesData : []
-
+      // Filter activities with future start time and sort by nearest start time
+      const now = new Date()
+      const futureActivities = activityList
+        .filter((activity: Activity) => {
+          const startTime = new Date(activity.start_time)
+          return startTime > now
+        })
+        .sort((a: Activity, b: Activity) => {
+          return new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+        })
+        .slice(0, 3) // Take only 3 nearest upcoming activities
+        console.log('Filtered and sorted future activities:', futureActivities)
       // Map to ActivityData format
-      const mapped = activityList.map((activity: Activity) => ({
+      const mapped = futureActivities.map((activity: Activity) => ({
         id: activity.activity_id,
         title: activity.title,
         description: activity.description,
@@ -109,11 +124,13 @@ export default function Home() {
         start_date: activity.start_time,
         end_date: activity.end_time,
         image: activity.posterUrl || null,
+        poster_url: activity.poster_url || null,
         participant_count: activity.registration_count || 0,
-        status: activity.status
+        status: activity.status,
+        criteria: activity.criteria || []
       }))
-
-      setHeroActivities(mapped.slice(0, 6))
+      console.log('Mapped hero activities:', mapped)
+      setHeroActivities(mapped)
     } catch (error) {
       console.error('Error fetching hero activities:', error)
       setHeroActivities([])
@@ -149,17 +166,17 @@ export default function Home() {
     try {
       setLoadingProgress(true)
       // Match API call from progress/page.tsx
-      if (!user?.user_id) {
+      if (!user?.user?.user_id) {
         console.warn('User ID not available')
         setStudentProgress(null)
         return
       }
 
-      const response = await apiClient.get(`/users/${user?.user_id}/sv5t/progress`)
+      const response = await apiClient.get(`/users/${user?.user?.user_id}/sv5t/progress`)
       console.log('Fetched student progress response:', response)
 
-      // Extract from nested structure: response.data.data.data contains the SV5TProgressData
-      const progressData = response.data?.data?.data || response.data?.data || null
+      // Extract from nested structure: response.data.data contains the SV5TProgressData
+      const progressData = response.data?.data.data || null
 
       if (progressData) {
         setStudentProgress(progressData)
@@ -205,7 +222,7 @@ export default function Home() {
   // ============ NOT LOGGED IN - Show Welcome Page ============
   if (isHydrated && !isAuthenticated) {
     return (
-      <div className="bg-white">
+      <div className="bg-white overflow-x-hidden">
         <LandingHero />
         <StatsSection />
         <FeaturesSection />
@@ -215,46 +232,84 @@ export default function Home() {
     )
   }
 
-  // ============ LOGGED IN - Show Personalized Home ============
+  // ============ LOADING - Waiting for hydration ============
   if (!isHydrated) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-8 h-8 text-primary animate-spin" />
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <Loader className="w-10 h-10 text-blue-600 animate-spin" />
+          <p className="text-gray-500 text-sm font-medium">Đang tải...</p>
+        </div>
       </div>
     )
   }
 
+  // ============ LOGGED IN - Show Personalized Home ============
   return (
-    <div className="bg-white min-h-screen">
-      {/* Dashboard Hero Section */}
+    <div className="bg-white min-h-screen overflow-x-hidden">
+
+      {/* HERO */}
       <DashboardHero />
 
-      {/* Featured Activities Section */}
-      {console.log(heroActivities)}
-      {loadingHero ? (
-        <div className="py-20 flex items-center justify-center">
-          <Loader className="w-8 h-8 text-primary animate-spin" />
+      {/* FEATURED ACTIVITIES */}
+      <div className="bg-white">
+        {loadingHero ? (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex items-center justify-center">
+            <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+          </div>
+        ) : (
+          <FeaturedActivities activities={heroActivities} />
+        )}
+      </div>
+
+      {/* PROGRESS */}
+      {loadingProgress ? (
+        <div className="bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex items-center justify-center">
+            <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+          </div>
         </div>
-      ) : heroActivities.length > 0 ? (
-        <FeaturedActivities activities={heroActivities} />
       ) : (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center text-gray-500">
-          <p>Hiện không có hoạt động nào. Vui lòng quay lại sau.</p>
+        <ProgressSection studentProgress={studentProgress} />
+      )}
+
+      {/* CATEGORIES */}
+      {categories.length > 0 && (
+        <div className="bg-white">
+          <CategoriesSection categories={categories} />
         </div>
       )}
 
-      {/* Progress Section */}
-      <ProgressSection studentProgress={studentProgress} />
+      {/* STATISTICS */}
+      <StatisticsSection />
 
-      {/* Recommendations Section */}
+      {/* ABOUT */}
+      <AboutSection />
+
+      {/* ORGANIZATION / BCH */}
+      <OrganizationSection />
+
+      {/* TESTIMONIALS */}
+      <TestimonialsSection />
+
+      {/* RECOMMENDATIONS */}
       {recommendations.length > 0 && (
-        <RecommendationsSection recommendations={recommendations} />
+        <div className="bg-white">
+          {loadingRecommendations ? (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex items-center justify-center">
+              <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+            </div>
+          ) : (
+            <RecommendationsSection recommendations={recommendations} />
+          )}
+        </div>
       )}
 
-      {/* Categories Section */}
-      {categories.length > 0 && (
-        <CategoriesSection categories={categories} />
-      )}
+      {/* CTA */}
+      {/* <div className="bg-white">
+        <CTASection />
+      </div> */}
+
     </div>
   )
 }

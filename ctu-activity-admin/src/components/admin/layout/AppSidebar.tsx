@@ -33,7 +33,6 @@ export function AppSidebar() {
     { title: "Đơn Vị Tổ Chức", icon: School, href: adminPath.ORGANIZING_UNITS },
     { title: "Loại Hoạt Động", icon: LayoutGrid, href: adminPath.ACTIVITY_TYPES },
     { title: "Sinh Viên", icon: Users, href: adminPath.STUDENTS },
-    { title: "Quyền hạn", icon: ShieldCheck, href: adminPath.PERMISSIONS },
     { title: "Vai trò", icon: UserCheck, href: adminPath.ROLES },
   ];
 
@@ -61,13 +60,13 @@ export function AppSidebar() {
               className="relative flex h-11 w-11 items-center justify-center rounded-xl 
                       bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500 
                       shadow-lg shadow-blue-500/30"
+                      style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))' }}
             >
-              <GraduationCap className="h-6 w-6 text-white" />
             </div>
           </div>
           <div className="flex flex-col">
             <h1 className="text-lg font-bold text-white tracking-tight">
-              CTU Activity
+              LCHSVCT Admin
             </h1>
             <p className="text-[10px] tracking-widest text-blue-300/70 font-semibold uppercase">Quản trị hệ thống</p>
           </div>
@@ -77,10 +76,10 @@ export function AppSidebar() {
         <div className="px-4 pb-4">
           <Link
             href={adminPath.ACTIVITIES}
-            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl 
-                     bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold
-                     hover:from-blue-600 hover:to-blue-700 transition-all duration-200
-                     shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40"
+            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-white text-sm font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+            style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))', boxShadow: '0 8px 16px -2px rgba(37, 99, 235, 0.3)' }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
           >
             <PlusCircle className="h-4 w-4" />
             Tạo Hoạt Động
@@ -106,10 +105,11 @@ export function AppSidebar() {
                       className={`
                         rounded-lg h-10 px-3 transition-all duration-200
                         ${isActive
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 hover:bg-blue-600 hover:text-white"
+                          ? "text-white shadow-lg hover:text-white"
                           : "text-slate-400 hover:text-white hover:bg-white/5"
                         }
                       `}
+                      style={isActive ? { background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))', boxShadow: '0 8px 16px -2px rgba(37, 99, 235, 0.3)', color: 'white' } : undefined}
                     >
                       <Link href={item.href}>
                         <item.icon className={`h-4 w-4 ${isActive ? "text-white" : ""}`} />

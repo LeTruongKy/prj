@@ -34,8 +34,7 @@ interface Activity {
   endTime?: string
   organizingUnit: string
   category: string
-  proofStatus: 'PENDING' | 'VERIFIED' | 'CANCELLED'
-  proofStatus: 'PENDING' | 'APPROVED' | 'REJECTED'
+  proofStatus: 'PENDING' | 'VERIFIED' | 'REJECTED'
   PENDINGAt: string
   registrationId: string
 }
@@ -203,7 +202,7 @@ export default function ProfilePage() {
 
   // Computed: Activities that are VERIFIED
   const checkedInActivities = useMemo(() => {
-    return activities.filter(act => act.proofStatus === 'VERIFIED')
+    return activities.filter(act => act.proofStatus === 'REJECTED')
   }, [activities])
 
   // Computed: Activities with APPROVED proof status
@@ -380,7 +379,7 @@ export default function ProfilePage() {
           </div>
           <h2 className="text-xl font-bold text-gray-800 mb-2">Không thể tải hồ sơ</h2>
           <p className="text-gray-500 mb-6">{error || 'Đã xảy ra lỗi khi tải thông tin hồ sơ.'}</p>
-          <Button className="bg-blue-600 hover:bg-blue-700 rounded-full px-8" onClick={() => router.push('/login')}>
+          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-full px-8" onClick={() => router.push('/login')}>
             Đăng nhập lại
           </Button>
         </div>
@@ -515,7 +514,7 @@ export default function ProfilePage() {
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                 </div>
-                <p className="text-4xl font-extrabold mb-1">{checkedInActivities.length}</p>
+                <p className="text-4xl font-extrabold mb-1">{approvedActivities.length}</p>
                 <p className="text-emerald-100 text-sm font-medium">Đã điểm danh</p>
               </div>
             </div>
@@ -603,7 +602,7 @@ export default function ProfilePage() {
                       size="sm"
                       onClick={handleSaveInterests}
                       disabled={interestsLoading}
-                      className="bg-blue-600 hover:bg-blue-700 rounded-lg text-xs"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-xs hover:shadow-md transition"
                     >
                       {interestsLoading ? (
                         <>
@@ -639,7 +638,7 @@ export default function ProfilePage() {
                   onClick={() => setActiveTab('PENDING')}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                     activeTab === 'PENDING'
-                      ? 'bg-blue-600 text-white shadow-sm'
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
@@ -649,21 +648,21 @@ export default function ProfilePage() {
                   onClick={() => setActiveTab('checkedin')}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                     activeTab === 'checkedin'
-                      ? 'bg-blue-600 text-white shadow-sm'
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Đã điểm danh
+                  Đã bị từ chối
                 </button>
                 <button
                   onClick={() => setActiveTab('approved')}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                     activeTab === 'approved'
-                      ? 'bg-blue-600 text-white shadow-sm'
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Đã xác nhận
+                  Đã điểm danh
                 </button>
               </div>
             </div>
@@ -686,7 +685,7 @@ export default function ProfilePage() {
               )}
 
               {/* Checked-in Tab */}
-              {/* {activeTab === 'checkedin' && (
+              {activeTab === 'checkedin' && (
                 <>
                   {checkedInActivities.length > 0 ? (
                     <div className="space-y-3">
@@ -698,7 +697,7 @@ export default function ProfilePage() {
                     <EmptyState message="Chưa có hoạt động nào đã điểm danh" />
                   )}
                 </>
-              )} */}
+              )}
 
               {/* Approved Tab */}
               {activeTab === 'approved' && (
@@ -765,7 +764,7 @@ export default function ProfilePage() {
             <Button variant="outline" onClick={() => setEditOpen(false)} className="rounded-xl">
               Hủy
             </Button>
-            <Button onClick={handleUpdateProfile} disabled={submitting} className="bg-blue-600 hover:bg-blue-700 rounded-xl">
+            <Button onClick={handleUpdateProfile} disabled={submitting} className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl">
               {submitting ? 'Đang lưu...' : 'Lưu thay đổi'}
             </Button>
           </DialogFooter>

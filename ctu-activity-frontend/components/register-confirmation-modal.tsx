@@ -154,7 +154,7 @@ export function RegisterConfirmationModal({
           <Button
             onClick={onConfirm}
             disabled={isLoading || isFull}
-            className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-200"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
           >
             {isLoading ? (
               <span className="flex items-center gap-2">

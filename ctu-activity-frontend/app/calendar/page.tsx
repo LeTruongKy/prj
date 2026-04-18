@@ -239,7 +239,7 @@ export default function CalendarPage() {
 
               <Button
                 onClick={handleToday}
-                className="ml-4 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 rounded-xl"
+                className="ml-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm px-4 rounded-xl hover:shadow-lg transition"
                 size="sm"
               >
                 Hôm nay
@@ -287,7 +287,7 @@ export default function CalendarPage() {
                     {/* Day Number */}
                     <span
                       className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-semibold transition-all
-                        ${isToday ? 'bg-blue-600 text-white' : isSelected ? 'text-blue-700' : 'text-gray-700'}
+                        ${isToday ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : isSelected ? 'text-blue-700' : 'text-gray-700'}
                       `}
                     >
                       {day}
@@ -321,15 +321,7 @@ export default function CalendarPage() {
 
             {/* Legend */}
             <div className="flex flex-wrap items-center gap-5 px-6 py-4 border-t border-gray-100 bg-gray-50/50 text-xs text-gray-500">
-              <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-blue-500 inline-block"></span> Đã xác nhận (Verified)
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-orange-400 inline-block"></span> Đang chờ (Pending)
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Xung đột (Conflict)
-              </span>
+             
             </div>
           </div>
 
@@ -442,9 +434,7 @@ export default function CalendarPage() {
             </div>
 
             {/* View full day button */}
-            <button className="w-full bg-white border-2 border-blue-500 text-blue-600 font-semibold text-sm rounded-2xl py-3 hover:bg-blue-50 transition">
-              Chi tiết toàn bộ ngày
-            </button>
+           
 
             {/* Conflict list (if any) */}
             {calendarData?.totalConflicts > 0 && (

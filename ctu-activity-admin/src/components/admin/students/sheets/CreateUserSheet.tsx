@@ -115,7 +115,7 @@ export function CreateUserSheet({ onUserCreated }: CreateUserSheetProps) {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white gap-2 hover:shadow-lg transition-all">
                     <UserPlus className="h-4 w-4" /> Thêm người dùng
                 </Button>
             </SheetTrigger>

@@ -206,9 +206,9 @@ export function DetailActivitySheet({ open, onOpenChange, activity, loading }: D
 
                         {/* Participants Section */}
                         <Tabs defaultValue="participants" className="w-full">
-                            <TabsList className="grid w-full grid-cols-2">
+                            <TabsList className="grid w-full grid-cols-1">
                                 <TabsTrigger value="participants">Danh sách sinh viên</TabsTrigger>
-                                <TabsTrigger value="statistics">Thống kê</TabsTrigger>
+                                {/* <TabsTrigger value="statistics">Thống kê</TabsTrigger> */}
                             </TabsList>
 
                             <TabsContent value="participants" className="space-y-4">

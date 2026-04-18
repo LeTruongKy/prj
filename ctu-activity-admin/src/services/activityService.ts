@@ -25,7 +25,16 @@ export const ActivityService = {
     },
 
     CallUpdateActivity: (id: number, payload: Partial<ModalActivityData>): Promise<IBackendRes<IActivity>> => {
-        return privateAxios.put(`/activities/${id}`, payload);
+        return privateAxios.patch(`/activities/${id}`, payload);
+    },
+
+    // ✅ NEW: Update activity with file upload (FormData)
+    CallUpdateActivityWithFile: (id: number, formData: FormData): Promise<IBackendRes<IActivity>> => {
+        return privateAxios.patch(`/activities/${id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     },
 
     CallDeleteActivity: (id: number): Promise<IBackendRes<any>> => {

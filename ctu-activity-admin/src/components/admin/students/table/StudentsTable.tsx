@@ -31,6 +31,7 @@ import { IUser } from "@/types/user.type";
 import { UserService } from "@/services/userService";
 import { studentColumns } from "./StudentColumns";
 import { CreateUserSheet } from "../sheets/CreateUserSheet";
+import { EditStudentSheet } from "../sheets/EditStudentSheet";
 import {
     Dialog,
     DialogContent,
@@ -50,6 +51,10 @@ export function StudentsTable() {
 
     const [studentList, setStudentList] = React.useState<IUser[]>([]);
     const [loading, setLoading] = React.useState(true);
+
+    // Edit Sheet state
+    const [openEditSheet, setOpenEditSheet] = React.useState(false);
+    const [selectedStudent, setSelectedStudent] = React.useState<IUser | null>(null);
 
     // Lock/Unlock Dialog state
     const [lockDialogOpen, setLockDialogOpen] = React.useState(false);
@@ -73,7 +78,8 @@ export function StudentsTable() {
     };
 
     const handleEdit = (user: IUser) => {
-        toast.info("Tính năng chỉnh sửa đang được phát triển");
+        setSelectedStudent(user);
+        setOpenEditSheet(true);
     };
 
     const handleToggleStatus = (user: IUser) => {
@@ -271,6 +277,16 @@ export function StudentsTable() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            <EditStudentSheet
+                open={openEditSheet}
+                onOpenChange={setOpenEditSheet}
+                student={selectedStudent}
+                onStudentUpdated={() => {
+                    fetchStudents();
+                    setSelectedStudent(null);
+                }}
+            />
         </div>
     );
 }

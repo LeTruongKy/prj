@@ -16,7 +16,7 @@ export const UnitService = {
     },
 
     CallUpdateUnit: (id: number, payload: ModalUnitData): Promise<IBackendRes<IUnit>> => {
-        return privateAxios.put(`/units/${id}`, payload);
+        return privateAxios.patch(`/units/${id}`, payload);
     },
 
     CallDeleteUnit: (id: number): Promise<IBackendRes<any>> => {

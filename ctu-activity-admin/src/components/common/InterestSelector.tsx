@@ -145,7 +145,7 @@ export function InterestSelector({
         <Button
           onClick={handleSubmit}
           disabled={submitting || selectedTagIds.length === 0}
-          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+          className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg transition-all"
         >
           {submitting ? (
             <>

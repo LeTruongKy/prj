@@ -28,7 +28,7 @@ export function CreateActivitySheet({ onActivityCreated }: CreateActivitySheetPr
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="bg-blue-600 hover:bg-blue-700 text-white gap-2 text-sm"
+        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white gap-2 text-sm hover:shadow-lg transition-all"
       >
         <Plus className="h-4 w-4" /> Tạo hoạt động mới
       </Button>

@@ -31,6 +31,7 @@ import { IUnit } from "@/types/unit.type";
 import { UnitService } from "@/services/unitService";
 import { unitColumns } from "./UnitColumns";
 import { CreateUnitModal } from "../modals/CreateUnitModal";
+import { EditUnitModal } from "../modals/EditUnitModal";
 
 export function UnitsTable() {
     const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -41,6 +42,8 @@ export function UnitsTable() {
     const [unitList, setUnitList] = React.useState<IUnit[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [openCreateModal, setOpenCreateModal] = React.useState(false);
+    const [openEditModal, setOpenEditModal] = React.useState(false);
+    const [selectedUnit, setSelectedUnit] = React.useState<IUnit | null>(null);
 
     const fetchUnits = async () => {
         setLoading(true);
@@ -59,7 +62,8 @@ export function UnitsTable() {
     };
 
     const handleEdit = (unit: IUnit) => {
-        toast.info("Tính năng chỉnh sửa đang được phát triển");
+        setSelectedUnit(unit);
+        setOpenEditModal(true);
     };
 
     const handleDelete = async (id: number) => {
@@ -113,7 +117,8 @@ export function UnitsTable() {
                     className="max-w-sm"
                 />
                 <Button
-                    className="bg-blue-600 hover:bg-blue-700 text-white gap-2 cursor-pointer"
+                    className="text-white gap-2 cursor-pointer transition-all hover:opacity-90"
+                    style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))' }}
                     onClick={() => setOpenCreateModal(true)}
                 >
                     <Plus className="h-4 w-4" /> Thêm đơn vị
@@ -196,6 +201,16 @@ export function UnitsTable() {
                 open={openCreateModal}
                 onClose={() => setOpenCreateModal(false)}
                 onSuccess={() => fetchUnits()}
+            />
+
+            <EditUnitModal
+                open={openEditModal}
+                onClose={() => {
+                    setOpenEditModal(false);
+                    setSelectedUnit(null);
+                }}
+                onSuccess={() => fetchUnits()}
+                unit={selectedUnit}
             />
         </div>
     );

@@ -7,7 +7,7 @@ export interface IAuthUser {
   email: string;
   fullName: string;
   studentCode: string | null;
-  status: "ACTIVE" | "BANNED" | "";
+  status: "ACTIVE" | "BANNED" | "LOCKED" | "";
   avatarUrl: string | null;
   unitId: number | null;
   role: string;

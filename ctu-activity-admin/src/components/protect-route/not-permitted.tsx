@@ -21,7 +21,8 @@ export const NotPermitted = () => {
 
         <button
           onClick={goLogin}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-all cursor-pointer"
+          className="w-full text-white font-medium py-2.5 rounded-lg transition-all cursor-pointer hover:opacity-90"
+          style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))' }}
         >
           Quay về trang đăng nhập
         </button>

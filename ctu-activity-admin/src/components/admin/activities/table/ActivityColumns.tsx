@@ -30,6 +30,7 @@ export const activityColumns = (
     onEdit: (activity: IActivity) => void,
     onDelete: (id: number) => void,
     onUpdateStatus: (id: number, status: ActivityStatus) => void,
+    onEditActivity?: (activity: IActivity) => void,
 ): ColumnDef<IActivity>[] => [
         {
             id: "select",
@@ -160,7 +161,12 @@ export const activityColumns = (
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => onEdit(activity)}>Chi tiết / Chỉnh sửa</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onEdit(activity)}>Chi tiết</DropdownMenuItem>
+                            {onEditActivity && (
+                                <DropdownMenuItem onClick={() => onEditActivity(activity)} className="text-blue-600">
+                                    ✏️ Chỉnh sửa
+                                </DropdownMenuItem>
+                            )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => onUpdateStatus(activityId as number, "PUBLISHED")} disabled={activity.status === "PUBLISHED"}>
                                 Duyệt & Đăng tải
@@ -171,7 +177,7 @@ export const activityColumns = (
                             <DropdownMenuItem onClick={() => onUpdateStatus(activityId as number, "CANCELLED")} className="text-red-600" disabled={activity.status === "CANCELLED"}>
                                 Hủy hoạt động
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
+                        <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => onDelete(activityId as number)} className="text-red-600">
                                 Xóa (Gỡ bỏ)
                             </DropdownMenuItem>

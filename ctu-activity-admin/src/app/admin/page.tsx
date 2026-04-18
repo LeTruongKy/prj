@@ -79,7 +79,7 @@ export default function AdminDashboard() {
       value: stats.totalActivities,
       icon: Calendar,
       description: "Hoạt động đã đăng ký",
-      gradient: "from-blue-500 to-blue-600",
+      gradient: "from-blue-600 to-purple-600",
       iconBg: "bg-blue-100",
       iconColor: "text-blue-600",
     },
@@ -287,7 +287,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* System Status */}
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-xl p-6 relative overflow-hidden shadow-lg shadow-blue-600/20">
+          <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 relative overflow-hidden shadow-lg shadow-purple-600/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-6 -translate-x-6" />
             <div className="relative">

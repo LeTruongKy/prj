@@ -79,7 +79,7 @@ export default function LoginPage() {
           />
         </div>
 
-        <Button type="submit" className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white">
+        <Button type="submit" className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           {isLoggingIn ? (
             <>
               <Loader className="animate-spin text-white" size={20} />

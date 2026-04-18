@@ -30,6 +30,8 @@ import { toast } from "sonner";
 import { IActivityCategory } from "@/types/activityCategory.type";
 import { ActivityCategoryService } from "@/services/activityCategoryService";
 import { activityTypeColumns } from "./ActivityTypeColumns";
+import { CreateCategoryModal } from "../../activity-categories/modals/CreateCategoryModal";
+import { EditCategoryModal } from "../../activity-categories/modals/EditCategoryModal";
 
 export function ActivityTypesTable() {
     const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -39,6 +41,9 @@ export function ActivityTypesTable() {
 
     const [categoryList, setCategoryList] = React.useState<IActivityCategory[]>([]);
     const [loading, setLoading] = React.useState(true);
+    const [openCreateModal, setOpenCreateModal] = React.useState(false);
+    const [openEditModal, setOpenEditModal] = React.useState(false);
+    const [selectedCategory, setSelectedCategory] = React.useState<IActivityCategory | null>(null);
 
     const fetchCategories = async () => {
         setLoading(true);
@@ -56,12 +61,14 @@ export function ActivityTypesTable() {
     };
 
     const handleEdit = (category: IActivityCategory) => {
-        toast.info("Tính năng chỉnh sửa đang được phát triển");
+        setSelectedCategory(category);
+        setOpenEditModal(true);
     };
 
     const handleDelete = async (id: number) => {
         if (confirm("Bạn có chắc chắn muốn xóa loại hoạt động này?")) {
             try {
+                console.log("Deleting category with id:", id);
                 const res = await ActivityCategoryService.CallDeleteCategory(id);
                 if (res?.statusCode === 200) {
                     toast.success("Xóa loại hoạt động thành công");
@@ -108,7 +115,10 @@ export function ActivityTypesTable() {
                     onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
                     className="max-w-sm"
                 />
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+                <Button 
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white gap-2 cursor-pointer hover:shadow-lg transition-all"
+                    onClick={() => setOpenCreateModal(true)}
+                >
                     <Plus className="h-4 w-4" /> Thêm loại hoạt động
                 </Button>
                 <DropdownMenu modal={false}>
@@ -129,6 +139,7 @@ export function ActivityTypesTable() {
                                     description: "Mô tả",
                                     createdAt: "Ngày tạo",
                                 };
+                                
                                 return (
                                     <DropdownMenuCheckboxItem
                                         key={column.id}
@@ -183,6 +194,22 @@ export function ActivityTypesTable() {
                 </Table>
             </div>
             <DataTablePagination table={table} />
+
+            <CreateCategoryModal
+                open={openCreateModal}
+                onClose={() => setOpenCreateModal(false)}
+                onSuccess={() => fetchCategories()}
+            />
+
+            <EditCategoryModal
+                open={openEditModal}
+                onClose={() => {
+                    setOpenEditModal(false);
+                    setSelectedCategory(null);
+                }}
+                onSuccess={() => fetchCategories()}
+                category={selectedCategory}
+            />
         </div>
     );
 }

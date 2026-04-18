@@ -11,6 +11,7 @@ interface RecommendationItem {
   category_name?: string
   image?: string | null
   poster_url?: string | null
+  posterUrl?: string | null
   location?: string
   startTime?: string
 }
@@ -53,9 +54,9 @@ export default function RecommendationsSection({ recommendations }: Recommendati
                       </div>
                     )}
 
-                    {poster_url ? (
+                    {imageUrl ? (
                       <Image
-                        src={poster_url}
+                        src={imageUrl}
                         alt={item.title}
                         fill
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"

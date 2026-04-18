@@ -90,7 +90,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
         setLoadingCategories(true);
         const categoryRes = await ActivityCategoryService.CallFetchCategoriesList();
         console.log("fetchCategories res", categoryRes);
-        if (categoryRes?.statusCode === 200) {
+        if (categoryRes?.statusCode === 200 && Array.isArray(categoryRes.data.data)) {
           setCategories(categoryRes.data.data);
         }
       } catch (error) {
@@ -109,10 +109,9 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
       try {
         setLoadingCriteria(true);
         const res = await CriteriaService.CallFetchCriteriaList();
-        if (res?.statusCode === 200) {
-          const data = res.data;
-
-          setCriteria(data);
+        console.log("fetchCriteria res", res);
+        if (res?.statusCode === 200 && Array.isArray(res.data)) {
+          setCriteria(res.data);
         }
       } catch (error) {
         console.error("Error fetching criteria:", error);

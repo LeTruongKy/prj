@@ -18,7 +18,7 @@ export default function RegisterPage() {
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(135deg, rgba(30, 58, 138, 0.85) 0%, rgba(37, 99, 235, 0.75) 40%, rgba(124, 58, 237, 0.8) 100%)',
+                'linear-gradient(135deg, rgb(37, 99, 235) 0%, rgb(147, 51, 234) 100%)',
             }}
           ></div>
         </div>
@@ -29,9 +29,7 @@ export default function RegisterPage() {
 
         <div className="relative z-10 flex flex-col h-full justify-between">
           {/* Logo */}
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">LCHSVCT</h2>
-          </div>
+          
 
           {/* Main Heading */}
           <div className="space-y-5 max-w-md">
@@ -75,17 +73,11 @@ export default function RegisterPage() {
         <div className="w-full max-w-md">
           {/* Logo for Mobile */}
           <div className="flex lg:hidden justify-center mb-8">
-            <div
-              className="text-3xl font-bold"
-              style={{
-                background:
-                  'linear-gradient(90deg, rgb(37, 99, 235) 0%, rgb(147, 51, 234) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              LCHSVCT
-            </div>
+            <img
+              src="/logo.jpg"
+              alt="LCHSVCT Logo"
+              className="w-12 h-12 rounded-xl object-cover border border-gray-200"
+            />
           </div>
 
           {/* Header */}

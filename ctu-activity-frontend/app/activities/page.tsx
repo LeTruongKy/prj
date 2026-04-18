@@ -116,7 +116,7 @@ export default function ActivitiesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#3b5feb] to-[#5b7cfa]">
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600">
         {/* Decorative circles */}
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/5 rounded-full" />
         <div className="absolute -bottom-32 -left-16 w-64 h-64 bg-white/5 rounded-full" />
@@ -131,7 +131,7 @@ export default function ActivitiesPage() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/calendar">
-              <button className="flex items-center gap-2 bg-white text-blue-600 font-semibold px-5 py-2.5 rounded-full hover:bg-blue-50 transition-colors shadow-md">
+              <button className="flex items-center gap-2 bg-white text-blue-600 font-semibold px-5 py-2.5 rounded-full hover:bg-blue-50 transition-colors shadow-md hover:shadow-lg">
                 📅 Xem lịch cá nhân
               </button>
             </Link>
@@ -177,7 +177,7 @@ export default function ActivitiesPage() {
               onClick={() => setCategoryFilter('all')}
               className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
                 categoryFilter === 'all'
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-300 hover:text-blue-600'
               }`}
             >
@@ -190,7 +190,7 @@ export default function ActivitiesPage() {
                 onClick={() => setCategoryFilter(cat.category_id.toString())}
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
                   categoryFilter === cat.category_id.toString()
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                     : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-300 hover:text-blue-600'
                 }`}
               >
@@ -323,8 +323,10 @@ export default function ActivitiesPage() {
                               Đã hết hạn
                             </button>
                           ) : (
-                            <button className="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl hover:bg-blue-700 transition-colors text-sm shadow-sm shadow-blue-100 group-hover:shadow-md group-hover:shadow-blue-200">
-                              Đăng ký ngay
+                            <button
+                              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl hover:shadow-md transition-all text-sm shadow-sm"
+                            >
+                              Đăng ký
                             </button>
                           )}
                         </CardContent>
@@ -346,7 +348,7 @@ export default function ActivitiesPage() {
                     setSearchTerm('')
                     setCategoryFilter('all')
                   }}
-                  className="bg-blue-600 text-white hover:bg-blue-700 rounded-full px-8"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg rounded-full px-8 transition-all shadow-md"
                 >
                   Xem tất cả hoạt động
                 </Button>
@@ -379,7 +381,7 @@ export default function ActivitiesPage() {
                           disabled={loading}
                           className={`w-9 h-9 flex items-center justify-center rounded-full text-sm font-semibold transition-all duration-200 ${
                             currentPage === page
-                              ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                              ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                               : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
                           }`}
                         >

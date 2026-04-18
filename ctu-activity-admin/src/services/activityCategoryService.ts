@@ -8,18 +8,18 @@ export const ActivityCategoryService = {
     },
 
     CallCreateCategory: (data: ModalActivityCategoryData): Promise<IBackendRes<IActivityCategory>> => {
-        return privateAxios.post("/activity-categories", data);
+        return privateAxios.post("/categories", data);
     },
 
     CallGetCategoryDetail: (id: number): Promise<IBackendRes<IActivityCategory>> => {
-        return privateAxios.get(`/activity-categories/${id}`);
+        return privateAxios.get(`/categories/${id}`);
     },
 
     CallUpdateCategory: (id: number, payload: ModalActivityCategoryData): Promise<IBackendRes<IActivityCategory>> => {
-        return privateAxios.put(`/activity-categories/${id}`, payload);
+        return privateAxios.patch(`/categories/${id}`, payload);
     },
 
     CallDeleteCategory: (id: number): Promise<IBackendRes<any>> => {
-        return privateAxios.delete(`/activity-categories/${id}`);
+        return privateAxios.delete(`/categories/${id}`);
     },
 };

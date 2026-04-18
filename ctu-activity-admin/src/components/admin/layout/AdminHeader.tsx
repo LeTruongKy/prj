@@ -71,7 +71,7 @@ export default function AdminHeader() {
                 <p className="text-sm font-semibold text-gray-800 leading-tight">{authUser.fullName ?? "Tài khoản"}</p>
                 <p className="text-[11px] text-gray-400 uppercase tracking-wider font-medium">Quản trị viên</p>
               </div>
-              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-blue-500/20">
+              <div className="h-9 w-9 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md" style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))', boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.3)' }}>
                 {authUser.fullName?.charAt(0)?.toUpperCase() || "A"}
               </div>
             </div>

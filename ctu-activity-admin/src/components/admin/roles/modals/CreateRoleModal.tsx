@@ -145,7 +145,8 @@ export function CreateRoleModal({ open, onClose, onSuccess }: ModalProps) {
             <Button
               onClick={handleSubmit}
               disabled={loading || !name.trim() || !description.trim()}
-              className="bg-blue-600 hover:bg-blue-700 text-white min-w-32 cursor-pointer"
+              className="text-white min-w-32 cursor-pointer transition-all hover:opacity-90"
+              style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))' }}
             >
               {loading ? "Đang lưu..." : "Lưu vai trò"}
             </Button>

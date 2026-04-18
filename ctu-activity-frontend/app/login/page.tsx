@@ -21,7 +21,7 @@ export default async function LoginPage({ searchParams }: {
         className="hidden lg:flex lg:w-[55%] flex-col justify-between p-10 text-white relative overflow-hidden"
         style={{
           background:
-            'linear-gradient(135deg, #1e3a8a 0%, #2563eb 40%, #7c3aed 100%)',
+            'linear-gradient(135deg, rgb(37, 99, 235) 0%, rgb(147, 51, 234) 100%)',
         }}
       >
         {/* Decorative blur circles */}
@@ -30,16 +30,8 @@ export default async function LoginPage({ searchParams }: {
         <div className="absolute top-1/2 right-0 w-56 h-56 bg-blue-300/10 rounded-full blur-3xl"></div>
 
         <div className="relative z-10 flex flex-col h-full justify-between">
-          {/* Top - Logo & Dark/Light icons */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/30">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path d="M12 14l6.16-3.422A12.083 12.083 0 0121 12.75c0 1.194-.232 2.333-.654 3.375L12 21l-8.346-4.875A12.054 12.054 0 013 12.75c0-1.194.232-2.333.654-3.375L12 14z" opacity="0.6" />
-              </svg>
-            </div>
-            <span className="text-2xl font-bold tracking-tight">LCHSVCT</span>
-          </div>
+          {/* Top - Logo */}
+        
 
           {/* Middle - Hero Text */}
           <div className="space-y-5 max-w-lg">
@@ -107,20 +99,16 @@ export default async function LoginPage({ searchParams }: {
         <div className="w-full max-w-md">
           {/* Logo for Mobile */}
           <div className="flex lg:hidden justify-center mb-8">
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center"
-              style={{
-                background:
-                  'linear-gradient(135deg, rgb(37, 99, 235) 0%, rgb(147, 51, 234) 100%)',
-              }}
-            >
-              <span className="text-white font-bold text-2xl">S</span>
-            </div>
+            <img
+              src="/logo.jpg"
+              alt="LCHSVCT Logo"
+              className="w-12 h-12 rounded-2xl object-cover border border-gray-200"
+            />
           </div>
 
           {/* Avatar Icon */}
           <div className="flex justify-center mb-5">
-            <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-200">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center shadow-lg" style={{boxShadow: '0 20px 25px -5px rgba(37, 99, 235, 0.3)'}}>
               <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
@@ -153,8 +141,8 @@ export default async function LoginPage({ searchParams }: {
             <p className="text-gray-600 mb-3">Chưa có tài khoản?</p>
             <Link
               href="/register"
-              className="inline-block w-full max-w-xs py-3 px-6 rounded-full border-2 border-blue-600 text-blue-600 font-semibold text-center
-                hover:bg-blue-600 hover:text-white transition-all duration-200"
+              className="inline-block w-full max-w-xs py-3 px-6 rounded-full border-2 border-transparent bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-center
+                hover:shadow-lg hover:scale-105 transition-all duration-200"
             >
               Đăng ký ngay
             </Link>

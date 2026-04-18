@@ -255,7 +255,7 @@ export default function ActivityDetailPage({
           <h2 className="text-xl font-bold text-gray-800 mb-2">Không tìm thấy hoạt động</h2>
           <p className="text-gray-500 mb-6">{error || 'Hoạt động này không tồn tại hoặc đã bị xóa.'}</p>
           <Link href="/activities">
-            <Button className="bg-blue-600 hover:bg-blue-700 rounded-full px-8">Quay lại danh sách hoạt động</Button>
+            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-full px-8">Quay lại danh sách hoạt động</Button>
           </Link>
         </div>
       </div>
@@ -432,7 +432,7 @@ export default function ActivityDetailPage({
                 <Button
                   onClick={handleRegister}
                   disabled={registering}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-200 hover:shadow-xl hover:shadow-blue-300 transition-all h-auto text-sm"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3.5 rounded-xl shadow-lg hover:shadow-xl hover:shadow-purple-300 transition-all h-auto text-sm"
                 >
                   {registering ? (
                     <span className="flex items-center gap-2">
@@ -472,7 +472,7 @@ export default function ActivityDetailPage({
             {/* Description Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-1 h-7 bg-blue-600 rounded-full" />
+                <div className="w-1 h-7 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
                 <h2 className="text-xl font-bold text-gray-900">Giới thiệu hoạt động</h2>
               </div>
               <div className="prose prose-gray max-w-none">
@@ -484,97 +484,26 @@ export default function ActivityDetailPage({
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-2 space-y-4">
-            {/* Quick Info Recap - Sticky */}
-            <div className="sticky top-24 space-y-4">
-              {/* Activity Info Card */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Criteria Card */}
+            {activity?.criteria && activity.criteria.length > 0 && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Thông tin chi tiết</h3>
-
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1 h-7 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
+                  <h2 className="text-lg font-bold text-gray-900">Tiêu chí đạt được</h2>
+                </div>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
-                    <span className="text-lg mt-0.5">📅</span>
-                    <div className="min-w-0">
-                      <p className="text-xs text-gray-400 font-medium mb-0.5">Ngày bắt đầu</p>
-                      <p className="text-sm font-semibold text-gray-800">
-                        {activity?.start_time
-                          ? new Date(activity.start_time).toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
-                          : 'Đang cập nhật'}
-                      </p>
+                  {activity.criteria.map((criterion) => (
+                    <div key={criterion.criterion_id} className="pb-4 border-b border-gray-100 last:border-b-0">
+                      <h3 className="font-semibold text-gray-900 mb-2 text-sm">{criterion.name}</h3>
+                      {criterion.description && (
+                        <p className="text-xs text-gray-600 leading-relaxed">{criterion.description}</p>
+                      )}
                     </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
-                    <span className="text-lg mt-0.5">🏁</span>
-                    <div className="min-w-0">
-                      <p className="text-xs text-gray-400 font-medium mb-0.5">Ngày kết thúc</p>
-                      <p className="text-sm font-semibold text-gray-800">
-                        {activity?.end_time
-                          ? new Date(activity.end_time).toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
-                          : 'Đang cập nhật'}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
-                    <span className="text-lg mt-0.5">⏰</span>
-                    <div className="min-w-0">
-                      <p className="text-xs text-gray-400 font-medium mb-0.5">Thời gian</p>
-                      <p className="text-sm font-semibold text-gray-800">
-                        {activity?.start_time
-                          ? new Date(activity.start_time).toLocaleTimeString('vi-VN', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                          })
-                          : 'Đang cập nhật'}{' '}
-                        —{' '}
-                        {activity?.end_time
-                          ? new Date(activity.end_time).toLocaleTimeString('vi-VN', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                          })
-                          : 'Đang cập nhật'}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
-                    <span className="text-lg mt-0.5">📍</span>
-                    <div className="min-w-0">
-                      <p className="text-xs text-gray-400 font-medium mb-0.5">Địa điểm</p>
-                      <p className="text-sm font-semibold text-gray-800">{activity?.location || 'Đang cập nhật'}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <span className="text-lg mt-0.5">🏢</span>
-                    <div className="min-w-0">
-                      <p className="text-xs text-gray-400 font-medium mb-0.5">Đơn vị tổ chức</p>
-                      <p className="text-sm font-semibold text-gray-800">{activity?.unit?.name || 'Đang cập nhật'}</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
-
-              {/* Status Card */}
-              <div className={`rounded-2xl p-5 border ${expired ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100'}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${expired ? 'bg-red-100' : 'bg-blue-100'}`}>
-                    <Clock className={`w-5 h-5 ${expired ? 'text-red-600' : 'text-blue-600'}`} />
-                  </div>
-                  <div>
-                    <p className={`text-sm font-bold ${expired ? 'text-red-700' : 'text-blue-700'}`}>
-                      {expired ? 'Hoạt động đã kết thúc' : `Còn ${daysRemaining} ngày đăng ký`}
-                    </p>
-                    <p className={`text-xs ${expired ? 'text-red-500' : 'text-blue-500'}`}>
-                      {expired ? 'Không thể đăng ký tham gia' : 'Hãy đăng ký sớm để giữ chỗ!'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -583,7 +512,7 @@ export default function ActivityDetailPage({
           <div className="mt-16">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-1 h-7 bg-blue-600 rounded-full" />
+                <div className="w-1 h-7 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
                 <h2 className="text-xl font-bold text-gray-900">Hoạt động tương tự</h2>
               </div>
               <Link href="/activities" className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium group">

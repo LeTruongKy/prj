@@ -30,7 +30,7 @@ export function PosterUploadField({
     value ? URL.createObjectURL(value) : null
   );
   const [isDragging, setIsDragging] = useState(false);
-  const [validationError, setValidationError] = useState<string | null>(error);
+  const [validationError, setValidationError] = useState<string | null>(error || null);
 
   // ✅ File validation function
   const validateFile = (file: File): string | null => {

@@ -157,12 +157,8 @@ export default function LoginForm({ returnUrl }: LoginFormProps) {
         disabled={isLoading || isValidating}
         className="w-full h-12 mt-8 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl
           transform transition-all duration-200 hover:scale-105
-          disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
-        style={{
-          background: isLoading || isValidating 
-            ? 'linear-gradient(135deg, rgb(37, 99, 235) 0%, rgb(147, 51, 234) 100%)'
-            : 'linear-gradient(90deg, rgb(37, 99, 235) 0%, rgb(147, 51, 234) 100%)',
-        }}
+          disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100
+          bg-gradient-to-r from-blue-600 to-purple-600"
       >
         {isLoading || isValidating ? (
           <span className="flex items-center gap-2">

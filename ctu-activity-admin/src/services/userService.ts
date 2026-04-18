@@ -16,7 +16,7 @@ export const UserService = {
     },
 
     CallUpdateUser: (id: string, payload: any): Promise<IBackendRes<IUser>> => {
-        return privateAxios.put(`/users/${id}`, payload);
+        return privateAxios.patch(`/users/${id}`, payload);
     },
 
     CallDeleteUser: (id: string): Promise<IBackendRes<any>> => {

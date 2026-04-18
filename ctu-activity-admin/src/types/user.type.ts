@@ -3,6 +3,7 @@ export interface IUser {
   email: string;
   fullName: string;
   studentCode: string | null;
+  major?: string | null;
   status: "ACTIVE" | "BANNED" | "LOCKED";
   avatarUrl: string | null;
   unitId: number | null;
