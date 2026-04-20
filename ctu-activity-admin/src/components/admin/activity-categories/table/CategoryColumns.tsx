@@ -1,4 +1,4 @@
-import { IActivityCategory } from "@/types/activityCategory.type";
+﻿import { IActivityCategory } from "@/types/activityCategory.type";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,11 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { formatDate } from "@/utils/formateDate";
+
+// Helper function to safely extract category ID
+const getCategoryId = (category: any): number | undefined => {
+    return category?.category_id || category?.id;
+};
 
 export const categoryColumns = (
     onEdit: (category: IActivityCategory) => void,
@@ -97,7 +102,14 @@ export const categoryColumns = (
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                onClick={() => onDelete(category.id)}
+                                onClick={() => {
+                                    const categoryId = getCategoryId(category);
+                                    if (categoryId) {
+                                        onDelete(categoryId);
+                                    } else {
+                                        console.error("Cannot delete: Category ID is undefined", category);
+                                    }
+                                }}
                                 className="text-red-600"
                             >
                                 <Trash2 className="h-4 w-4 mr-2" />

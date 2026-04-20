@@ -1,6 +1,0 @@
-backend: thêm qr code cho hoạt động ( admin, CH, LCH đc có mã) sinh viên quet mã nay thi duoc chuyen trang thai trong bang registration sang verified ,chinh sua filter hoat dong them vao filter theo ngày tháng, , Chi hội, 
-
-AI: cập nhật lại recommendservice (thay doi lai dua theo so thich và bngười dùng tương tác với hoạt động ra sao() thi contenbase dựa theo người dùng xem và đăng kí hoạt động them vào hoạt động được gơi ý sẽ không bị trùng lịch của user (trong bảng user_activity_schedule và hoạt động phù hợp với các tiêu chí còn thiếu (criteria) của user, hoat động gợi ý phải không được trùng với hoat động user đã đăng kí)
-database: bảng activity: bỏ các cột: (pointsValue, rquiresProof, criteriaGroupId, qrExpiration, qrCodeUrl, qrSecret), bang user bo cac cot( gpa, drl, creditCount, isDisabled, sv5tEligible), bo bang user_criteria
-Thay đổi bảng interest của user ( user click vào hoạt động để xem chi tiết, đăng kí hoạt động thì sẽ dựa theo tag hoạt động để nhận biết sở thích của user) ai recommend service lại sử dụng dữ liệu của user tương tác,
-Backend: thêm qr code cho hoạt động tạo hoạt động thì hoạt động đó sẽ có qr code (chi hội, lch admin có quyền mở qr code ) sinh viên quét qr code để minh chứng tham gia hoạt động -> proofStatus trong registration thành verified, sửa lại xuất file excel thành tiếng việt-> proofStatus là verified mới xuất

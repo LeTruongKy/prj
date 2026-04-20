@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
-import { Loader } from 'lucide-react'
+import { Loader, Router } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
 import { getActivities, getCategories, Activity, Category } from '@/lib/activity-service'
 import apiClient from '@/lib/api'
@@ -80,7 +80,6 @@ export default function Home() {
   useEffect(() => {
     if (!isHydrated) return
 
-    console.log('Home component hydrated. Authenticated:', isAuthenticated, 'User:', user)
     
     if (isAuthenticated) {
       fetchHeroActivities()
@@ -112,7 +111,6 @@ export default function Home() {
           return new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
         })
         .slice(0, 3) // Take only 3 nearest upcoming activities
-        console.log('Filtered and sorted future activities:', futureActivities)
       // Map to ActivityData format
       const mapped = futureActivities.map((activity: Activity) => ({
         id: activity.activity_id,
@@ -129,7 +127,6 @@ export default function Home() {
         status: activity.status,
         criteria: activity.criteria || []
       }))
-      console.log('Mapped hero activities:', mapped)
       setHeroActivities(mapped)
     } catch (error) {
       console.error('Error fetching hero activities:', error)
@@ -142,7 +139,6 @@ export default function Home() {
   const fetchCategories = async () => {
     try {
       const response = await getCategories()
-      console.log('Fetched categories response:', response)
 
       // Extract from nested structure: response.data contains array of categories
       const categoryList = response.data?.data || response.data || []
@@ -173,7 +169,6 @@ export default function Home() {
       }
 
       const response = await apiClient.get(`/users/${user?.user?.user_id}/sv5t/progress`)
-      console.log('Fetched student progress response:', response)
 
       // Extract from nested structure: response.data.data contains the SV5TProgressData
       const progressData = response.data?.data.data || null
@@ -195,18 +190,15 @@ export default function Home() {
     try {
       setLoadingRecommendations(true)
       // Match API call from ai-recommendations/page.tsx
-      console.log('Fetching recommendations for user:', user)
       if (!user?.user_id) {
         console.warn('User ID not available for recommendations')
         setRecommendations([])
         return
       }
 
-      console.log('[Homepage Recs] Fetching recommendations for user:', user?.user_id)
       const response = await privateAxios.get(
         `/activities/recommendations/${user?.user_id}?limit=10`
       )
-      console.log('[Homepage Recs] Recommendations fetched:', response)
 
       // Extract from nested structure: response.data.data.recommendations
       const recs = response.data?.data?.recommendations || []
@@ -223,7 +215,7 @@ export default function Home() {
   if (isHydrated && !isAuthenticated) {
     return (
       <div className="bg-white overflow-x-hidden">
-        <LandingHero />
+      <DashboardHero />
         <StatsSection />
         <FeaturesSection />
         <ProcessSection />
@@ -281,16 +273,16 @@ export default function Home() {
       )}
 
       {/* STATISTICS */}
-      <StatisticsSection />
+      {/* <StatisticsSection /> */}
 
       {/* ABOUT */}
-      <AboutSection />
+      {/* <AboutSection /> */}
 
       {/* ORGANIZATION / BCH */}
       <OrganizationSection />
 
       {/* TESTIMONIALS */}
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
 
       {/* RECOMMENDATIONS */}
       {recommendations.length > 0 && (

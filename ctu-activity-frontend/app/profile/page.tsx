@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
@@ -223,9 +223,7 @@ export default function ProfilePage() {
       setError(null)
 
       // Fetch profile
-      console.log('[Profile] Fetching user profile')
       const profileRes = await apiClient.get('/users/me/profile')
-      console.log('[Profile] Profile response structure:', profileRes)
       const profileData = profileRes.data.data?.user || profileRes.data.user || profileRes.data
       setProfile(profileData)
       setEditData({
@@ -234,13 +232,10 @@ export default function ProfilePage() {
       })
 
       // Fetch all activities in a single request
-      console.log('[Profile] Fetching all user activities')
       const activitiesRes = await apiClient.get('/users/me/activities')
-      console.log('[Profile] Activities response structure:', activitiesRes)
 
       // Extract data from nested structure: response.data.data.data
       const activitiesData = activitiesRes.data?.data?.data || activitiesRes.data?.data || []
-      console.log('[Profile] Extracted activities:', activitiesData)
 
       setActivities(Array.isArray(activitiesData) ? activitiesData : [])
 
@@ -258,18 +253,15 @@ export default function ProfilePage() {
     try {
       // Fetch all tags
       const tagsRes = await TagService.CallFetchAllTags()
-      console.log('[Profile] All tags response:', tagsRes)
       if (tagsRes?.statusCode === 200) {
         setAllTags(tagsRes.data.data || [])
       }
 
       // Fetch user interests
       const interestsRes = await UserInterestService.CallGetMyInterests()
-      console.log('[Profile] User interests response:', interestsRes)
       if (interestsRes?.statusCode === 200) {
         const interests = (interestsRes.data.data as IUserInterest[]) || []
         setUserInterests(interests)
-        console.log('[Profile] User interests set:', interests)
         setSelectedInterestIds(interests.map((i: IUserInterest) => i.tagId))
       }
     } catch (err) {
@@ -318,7 +310,6 @@ export default function ProfilePage() {
   const handleUpdateProfile = async () => {
     try {
       setSubmitting(true)
-      console.log('[Profile] Updating profile')
       await apiClient.patch('/users/me/profile', editData)
 
       setProfile(prev => prev ? { ...prev, ...editData } : null)

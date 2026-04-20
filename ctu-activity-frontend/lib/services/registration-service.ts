@@ -1,4 +1,4 @@
-import { apiClient } from '@/lib/api'
+﻿import { apiClient } from '@/lib/api'
 
 export interface Conflict {
   activityId: number
@@ -67,10 +67,8 @@ export async function registerForActivity(
       skipConflictCheck: skipConflictCheck || false,
     })
     const result = response.data.data || response.data;
-    console.log('Registration response:', result);
     // ✅ ADD: Track REGISTER interaction (fire-and-forget)
     if (result.message == "User registered activities retrieved successfully") {
-      console.log('Tracking register interaction for activity:', activityId);
       trackRegisterInteractionInternal(activityId).catch((error) => {
         // Silently log, don't break response
         console.debug('[Registration Tracking] Failed to track register:', error.message);

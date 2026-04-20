@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -35,7 +35,6 @@ export default function RecommendationsSection({ recommendations }: Recommendati
       <div className="overflow-x-auto pb-4 scrollbar-hide -mx-1 px-1">
         <div className="flex gap-5 min-w-max">
           {recommendations.map((item) => {
-            console.log(item)
             // Support both image and posterUrl fields
             const imageUrl = (item.poster_url || item.posterUrl) as string | null
             const categoryName = item.category?.name || item.category_name

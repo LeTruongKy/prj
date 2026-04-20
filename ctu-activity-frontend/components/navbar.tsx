@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -23,7 +23,6 @@ export default function Navbar() {
   const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
-    console.log('Navbar auth state:', { isAuthenticated, user })
     if (typeof initializeAuth === 'function') {
       initializeAuth().then(() => setIsHydrated(true))
     } else {

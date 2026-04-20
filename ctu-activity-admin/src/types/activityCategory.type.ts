@@ -1,12 +1,13 @@
-import { IActivity } from "./activity.type";
+﻿import { IActivity } from "./activity.type";
 
 export interface IActivityCategory {
-    id: number;
+    id?: number;
+    category_id?: number;
     name: string;
     description: string | null;
     color: string | null;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
     activities?: IActivity[];
 }
 

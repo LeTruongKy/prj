@@ -127,3 +127,18 @@ class ActivityCriteria(Base):
     createdAt = Column(DateTime, default=datetime.utcnow)
 
     activity = relationship("Activity")
+
+class UserActivityInteraction(Base):
+    """
+    UserActivityInteraction table model
+    Tracks user interactions with activities (VIEW, REGISTER, CHECK_IN)
+    """
+    __tablename__ = "user_activity_interactions"
+
+    id = Column(String(36), primary_key=True, index=True)  # UUID
+    userId = Column(String(36), nullable=False)  # UUID
+    activityId = Column(Integer, ForeignKey("activities.id", ondelete="CASCADE"), nullable=False)
+    action = Column(String(20), nullable=False)  # VIEW, REGISTER, CHECK_IN
+    createdAt = Column(DateTime, default=datetime.utcnow)
+
+    activity = relationship("Activity")

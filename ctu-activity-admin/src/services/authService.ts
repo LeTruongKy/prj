@@ -1,4 +1,4 @@
-import privateAxios from "@/lib/axios/privateAxios";
+﻿import privateAxios from "@/lib/axios/privateAxios";
 import publicAxios from "@/lib/axios/publicAxios";
 import { IAccount, IGetAccount, LoginInput } from "@/types/authen.type";
 import { IBackendRes } from "@/types/backend.type";

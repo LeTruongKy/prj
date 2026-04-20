@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -20,6 +20,7 @@ import {
 import { AlertCircle, Eye, EyeOff, CheckCircle2 } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
 import { getUnits, Unit } from '@/lib/activity-service'
+import { useToast } from '@/hooks/use-toast'
 
 // Zod validation schema
 const registerSchema = z
@@ -65,6 +66,7 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
+  const { toast } = useToast()
   const [units, setUnits] = useState<Unit[]>([])
   const [unitsLoading, setUnitsLoading] = useState(true)
   const [unitsError, setUnitsError] = useState<string | null>(null)
@@ -77,7 +79,6 @@ export default function RegisterForm() {
         const response = await getUnits()
         // Extract units from response structure
         const unitsData = response.data
-        console.log('[Local API] Units response:', unitsData)
         setUnits(unitsData.data)
       } catch (err) {
         console.error('[Local API] Error fetching units:', err)
@@ -121,12 +122,22 @@ export default function RegisterForm() {
       await registerUser(data.fullName, data.studentCode, data.email, data.password, unitId)
       // Show success message
       setSuccessMessage('Tài khoản tạo thành công! Chuyển hướng đến đăng nhập...')
+      toast({
+        title: 'Thành công!',
+        description: 'Đăng ký tài khoản thành công',
+        variant: 'default',
+      })
       // Redirect to login after a short delay
       setTimeout(() => {
         router.push('/login')
       }, 2000)
     } catch (error) {
       console.error('Registration error:', error)
+      toast({
+        title: 'Lỗi!',
+        description: error instanceof Error ? error.message : 'Đăng ký thất bại',
+        variant: 'destructive',
+      })
     }
   }
 

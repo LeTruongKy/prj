@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { use, useState, useEffect } from 'react'
@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useAuthStore } from '@/lib/auth-store'
 import { ProofUploadModal } from '@/components/proof-upload-modal'
 import { RegisterConfirmationModal } from '@/components/register-confirmation-modal'
+import { useToast } from '@/hooks/use-toast'
 import {
   getActivityById,
   registerActivity,
@@ -55,7 +56,6 @@ function isActivityExpired(endTime: string): boolean {
   return new Date(endTime) < new Date()
 }
 
-
 export default function ActivityDetailPage({
   params,
 }: {
@@ -75,6 +75,7 @@ export default function ActivityDetailPage({
   const [showProofDialog, setShowProofDialog] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [registerError, setRegisterError] = useState<string | null>(null)
+  const { toast } = useToast()
 
   // Fetch activity details
   useEffect(() => {
@@ -82,7 +83,6 @@ export default function ActivityDetailPage({
       try {
         setLoading(true)
         const data = await getActivityById(parseInt(resolvedParams.id))
-        console.log('Fetched activity details:321321', data)
         const activityData = data.data?.activity || data
         setActivity(activityData)
         setError(null)
@@ -95,7 +95,6 @@ export default function ActivityDetailPage({
               categoryId: activityData.category.category_id,
               expand: 'category,unit'
             })
-            console.log(response)
             const allActivities = response.data?.data || []
             // Filter out current activity and limit to 3
             const similar = allActivities
@@ -124,7 +123,6 @@ export default function ActivityDetailPage({
 
       try {
         const activityId = parseInt(resolvedParams.id)
-        console.log(user)
         const response = await getUserRegisteredActivities(user.user.user_id)
 
         const userActivities = response.data.data || []
@@ -183,13 +181,19 @@ export default function ActivityDetailPage({
           : null
       )
 
+      // Show success toast
+      toast({
+        title: 'Thành công!',
+        description: 'Đăng ký tham gia hoạt động thành công',
+        variant: 'default',
+      })
+
       // Close modal on success
       setShowConfirmModal(false)
 
       // Double-check by calling API
       if (user) {
         const checkResponse = await getUserRegisteredActivities(user.user.user_id)
-        console.log('User registered activities after registration:', checkResponse.data)
         const userActivities = checkResponse.data?.data || []
         const newReg = userActivities.find(
           (reg: any) => reg.activityId === parseInt(resolvedParams.id)
@@ -202,6 +206,11 @@ export default function ActivityDetailPage({
       const message =
         err.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.'
       setRegisterError(message)
+      toast({
+        title: 'Lỗi!',
+        description: message,
+        variant: 'destructive',
+      })
     } finally {
       setRegistering(false)
     }

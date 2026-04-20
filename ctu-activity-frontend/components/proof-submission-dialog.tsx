@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
@@ -30,7 +30,6 @@ export function ProofSubmissionDialog({ open, onOpenChange }: ProofSubmissionDia
     try {
       // TODO: Implement actual proof submission API call
       // Example: await submitProof({ proofUrl, description })
-      console.log('[v0] Proof submitted:', { proofUrl, description })
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000))

@@ -1,4 +1,4 @@
-import { IActivityCategory } from "@/types/activityCategory.type";
+﻿import { IActivityCategory } from "@/types/activityCategory.type";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -81,7 +81,9 @@ export const activityTypeColumns = (
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => onEdit(category)}>Chỉnh sửa</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onEdit(category)}>
+                                Chỉnh sửa
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => onDelete(category.id)} className="text-red-600">
                                 Xóa

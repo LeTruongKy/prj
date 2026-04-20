@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -36,7 +36,6 @@ export default function AiRecommendations({ recommendations }: AiRecommendations
       hour: '2-digit',
       minute: '2-digit',
     })
-    console.log('recomend321',recommendations)
     return `${dateStr} • ${timeStr}`
   }
 
@@ -88,22 +87,31 @@ export default function AiRecommendations({ recommendations }: AiRecommendations
                   </h3>
 
                   {/* Description */}
-                  {rec.description && (
+                  {/* {rec.description && (
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                       {rec.description}
                     </p>
-                  )}
+                  )} */}
 
                   {/* Meta Info */}
                   <div className="space-y-2.5 mb-5 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <span className="text-base">⏰</span>
+                      <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                            <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
                       <span className="font-medium">{formatDateTime(rec.start_time)} - </span>
                       <span className="font-medium">{formatDateTime(rec.end_time)}</span>
                     </div>
                     {rec.location && (
                       <div className="flex items-center gap-2">
-                        <span className="text-base">📍</span>
+                        <div className="w-7 h-7 rounded-lg bg-orange-50 flex items-center justify-center shrink-0">
+                            <svg className="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </div>
                         <span className="font-medium line-clamp-1">{rec.location}</span>
                       </div>
                     )}
@@ -132,7 +140,7 @@ export default function AiRecommendations({ recommendations }: AiRecommendations
 
                   {/* Register Button */}
                   <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl hover:shadow-md transition-all text-sm shadow-sm">
-                    <span>Xem Chi Tiết</span>
+                    <span>Đăng ký ngay</span>
                   </button>
                 </CardContent>
               </Card>

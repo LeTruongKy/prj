@@ -1,4 +1,4 @@
-export const ALL_MODULES = {
+﻿export const ALL_MODULES = {
   USERS: "USERS",
   AUTH: "AUTH",
   ACTIVITIES: "ACTIVITIES",

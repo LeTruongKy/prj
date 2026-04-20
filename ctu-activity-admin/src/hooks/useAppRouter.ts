@@ -1,4 +1,4 @@
-import { appPath } from "@/constants/path";
+﻿import { appPath } from "@/constants/path";
 import { useRouter } from "next/navigation";
 
 export const useAppRouter = () => {

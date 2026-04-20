@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import {
@@ -55,7 +55,7 @@ export function ActivitiesTable() {
         setLoading(true);
         try {
             const res = await ActivityService.CallFetchActivitiesList();
-            console.log("Fetched activities list response:", res);
+
             if (res?.statusCode === 200 && Array.isArray(res.data.data)) {
                 setActivityList(res.data.data);
             }

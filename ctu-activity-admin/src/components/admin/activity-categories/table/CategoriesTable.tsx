@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import {
@@ -48,7 +48,7 @@ export function CategoriesTable() {
     const fetchCategories = async () => {
         setLoading(true);
         try {
-            const res = await ActivityCategoryService.CallFetchCategoriesList();
+                        const res = await ActivityCategoryService.CallFetchCategoriesList();
             if (res?.statusCode === 200 && Array.isArray(res.data)) {
                 setCategoryList(res.data);
             }
@@ -66,7 +66,7 @@ export function CategoriesTable() {
     };
 
     const handleDelete = async (id: number) => {
-        if (confirm("Bạn có chắc chắn muốn xóa loại hoạt động này?")) {
+                if (confirm("Bạn có chắc chắn muốn xóa loại hoạt động này?")) {
             try {
                 const res = await ActivityCategoryService.CallDeleteCategory(id);
                 if (res?.statusCode === 200) {

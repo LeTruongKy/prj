@@ -1,4 +1,4 @@
-import apiClient from './api'
+﻿import apiClient from './api'
 
 export interface Criterion {
   criterion_id: number
@@ -138,7 +138,6 @@ export async function getActivityById(id: number) {
   const response = await apiClient.get(`/activities/${id}`, {
     params: { expand: 'category,unit,registrations' },
   })
-  console.log('Fetched activity details:', response.data)
   // ✅ ADD: Track VIEW interaction (fire-and-forget)
   trackViewInteraction(id).catch((error) => {
     // Silently log, don't break response
@@ -197,9 +196,7 @@ export async function registerActivity(activityId: number) {
   const response = await apiClient.post('/registrations', {
     activityId,
   })
-  console.log('Registration response:', response.data);
   if (response) {
-      console.log('Tracking register interaction for activity:', activityId);
       trackRegisterInteractionInternal(activityId).catch((error) => {
         // Silently log, don't break response
         console.debug('[Registration Tracking] Failed to track register:', error.message);

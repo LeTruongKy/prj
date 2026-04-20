@@ -1,4 +1,4 @@
-import { IUnit } from "@/types/unit.type";
+﻿import { IUnit } from "@/types/unit.type";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, School, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,7 @@ export const unitColumns = (
                 const type = row.getValue("type") as string;
                 return (
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${type === "LCH" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}`}>
-                        {type === "LCH" ? "Liên chi hội" : "Chi hội"}
+                        {type === "LCH" ? "Liên chi hôi" : "Chi hội"}
                     </span>
                 );
             },

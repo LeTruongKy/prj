@@ -1,4 +1,4 @@
-import privateAxios from "@/lib/axios/privateAxios";
+﻿import privateAxios from "@/lib/axios/privateAxios";
 import { IBackendRes } from "@/types/backend.type";
 
 export interface ITag {

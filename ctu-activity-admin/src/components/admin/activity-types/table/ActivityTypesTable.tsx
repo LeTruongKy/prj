@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import {
@@ -49,8 +49,8 @@ export function ActivityTypesTable() {
         setLoading(true);
         try {
             const res = await ActivityCategoryService.CallFetchCategoriesList();
-            if (res?.statusCode === 200 && Array.isArray(res.data.data)) {
-                setCategoryList(res.data.data);
+            if (res?.statusCode === 200 && Array.isArray(res.data)) {
+                setCategoryList(res.data);
             }
         } catch (error) {
             console.error("Error loading categories:", error);
@@ -68,7 +68,7 @@ export function ActivityTypesTable() {
     const handleDelete = async (id: number) => {
         if (confirm("Bạn có chắc chắn muốn xóa loại hoạt động này?")) {
             try {
-                console.log("Deleting category with id:", id);
+console.log("Deleting category with id:", id);
                 const res = await ActivityCategoryService.CallDeleteCategory(id);
                 if (res?.statusCode === 200) {
                     toast.success("Xóa loại hoạt động thành công");

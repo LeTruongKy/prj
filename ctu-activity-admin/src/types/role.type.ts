@@ -1,4 +1,4 @@
-export interface IRole {
+﻿export interface IRole {
   id: number;
   name: string;
   description: string | null;

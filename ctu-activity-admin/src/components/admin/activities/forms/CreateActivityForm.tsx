@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -35,9 +35,9 @@ import { CriteriaService } from "@/services/criteriaService";
 import { IActivityCategory } from "@/types/activityCategory.type";
 import { ICriteria } from "@/types/criteria.type";
 import { useAuthStore } from "@/stores/authStore";
-// ✅ Import PosterUploadField
+// âœ… Import PosterUploadField
 import { PosterUploadField } from "../components/PosterUploadField";
-// ✅ Import TagSelector
+// âœ… Import TagSelector
 import { TagSelector } from "@/components/common/TagSelector";
 
 interface CreateActivityFormProps {
@@ -63,9 +63,9 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [loadingCriteria, setLoadingCriteria] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  // ✅ State for poster file
+  // âœ… State for poster file
   const [posterFile, setPosterFile] = useState<File | null>(null);
-  // ✅ State for tags
+  // âœ… State for tags
   const [tagIds, setTagIds] = useState<number[]>([]);
 
   const form = useForm<FormData>({
@@ -89,13 +89,12 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
       try {
         setLoadingCategories(true);
         const categoryRes = await ActivityCategoryService.CallFetchCategoriesList();
-        console.log("fetchCategories res", categoryRes);
-        if (categoryRes?.statusCode === 200 && Array.isArray(categoryRes.data.data)) {
-          setCategories(categoryRes.data.data);
+        if (categoryRes?.statusCode === 200 && Array.isArray(categoryRes.data)) {
+          setCategories(categoryRes.data);
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
-        toast.error("Không thể tải danh sách loại hoạt động");
+        toast.error("không thể tải danh sách loại hoạt động");
       } finally {
         setLoadingCategories(false);
       }
@@ -109,13 +108,12 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
       try {
         setLoadingCriteria(true);
         const res = await CriteriaService.CallFetchCriteriaList();
-        console.log("fetchCriteria res", res);
         if (res?.statusCode === 200 && Array.isArray(res.data)) {
           setCriteria(res.data);
         }
       } catch (error) {
         console.error("Error fetching criteria:", error);
-        toast.error("Không thể tải danh sách tiêu chí");
+        toast.error("không thể tải danh sách tiêu chí");
       } finally {
         setLoadingCriteria(false);
       }
@@ -129,7 +127,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
       setSubmitting(true);
 
       if (!authUser?.unitId) {
-        toast.error("Không thể xác định đơn vị của bạn");
+        toast.error("không thể xác định đơn vị của bạn");
         return;
       }
 
@@ -137,7 +135,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
       const startDate = new Date(data.startTime);
       const endDate = new Date(data.endTime);
 
-      // ✅ Use FormData for multipart/form-data request
+      // âœ… Use FormData for multipart/form-data request
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description || "");
@@ -148,26 +146,32 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
       formData.append("startTime", startDate.toISOString());
       formData.append("endTime", endDate.toISOString());
 
-      // ✅ Append file if selected
+      // âœ… Append file if selected
       if (posterFile) {
         formData.append("file", posterFile);
       }
 
-      // ✅ Append criteria IDs if any
+      // âœ… Append criteria IDs if any
       if (data.criteriaIds && data.criteriaIds.length > 0) {
         data.criteriaIds.forEach((id) => {
           formData.append("criteriaIds", String(id));
         });
+      } else {
+        // Ensure criteria is always an array, even if empty
+        formData.append("criteriaIds", "");
       }
 
-      // ✅ Append tag IDs if any
+      // âœ… Append tag IDs if any
       if (tagIds && tagIds.length > 0) {
         tagIds.forEach((id) => {
           formData.append("tagIds", String(id));
         });
+      } else {
+        // Ensure tags is always an array, even if empty
+        formData.append("tagIds", "");
       }
 
-      // ✅ Call service with FormData (multipart/form-data)
+      // âœ… Call service with FormData (multipart/form-data)
       const res = await ActivityService.CallCreateActivityWithFile(formData);
 
       if (res?.statusCode === 201 || res?.statusCode === 200) {
@@ -219,7 +223,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mô Tả</FormLabel>
+              <FormLabel>MMô tả</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Nhập mô tả chi tiết về hoạt động"
@@ -242,7 +246,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
               <FormLabel>Địa Điểm</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Nhập địa điểm tổ chức"
+                  placeholder="Nhập địa điểm tổ chức hoạt động"
                   {...field}
                   disabled={submitting}
                 />
@@ -252,11 +256,11 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
           )}
         />
 
-        {/* ✅ Poster Image Upload */}
+        {/* âœ… Poster Image Upload */}
         <FormItem>
-          <FormLabel>Ảnh Poster Hoạt Động</FormLabel>
+          <FormLabel>Ảnh Poster Hoạt động</FormLabel>
           <FormDescription>
-            Chọn ảnh đại diện cho hoạt động. Hỗ trợ JPEG, PNG, GIF, WebP (tối đa 5MB)
+            Chọn ảnh đại diện cho hoạt động. Hỗ trợ JPEG, PNG. Kích thước tối đa 5MB.
           </FormDescription>
           <PosterUploadField
             value={posterFile}
@@ -309,7 +313,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
         <FormItem>
           <FormLabel>Tags</FormLabel>
           <FormDescription>
-            Chọn các tags liên quan để giúp người dùng dễ tìm kiếm hoạt động này
+            Chọn các tags liên quan để giúp người dùng dễ dàng tìm kiếm hoạt động này
           </FormDescription>
           <TagSelector
             selectedTagIds={tagIds}

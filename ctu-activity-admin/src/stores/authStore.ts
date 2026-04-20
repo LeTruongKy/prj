@@ -1,4 +1,4 @@
-import { IUser } from "@/types/user.type";
+﻿import { IUser } from "@/types/user.type";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -82,6 +82,7 @@ export const useAuthStore = create<IAuthState & authAction>()(
           },
           isLoading: false,
           accessToken: accessToken,
+          isLoggingIn: true,
         }));
       },
 
@@ -91,6 +92,7 @@ export const useAuthStore = create<IAuthState & authAction>()(
           isLoading: false,
           isAuthenticated: false,
           authUser: initialAuthState.authUser,
+          isLoggingIn: false,
         });
       },
 

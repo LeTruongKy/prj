@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
@@ -28,7 +28,6 @@ export function CheckInDialog({ open, onOpenChange }: CheckInDialogProps) {
     try {
       // TODO: Implement actual QR code verification API call
       // Example: await verifyQRCode(qrCode)
-      console.log('[v0] QR Code submitted:', qrCode)
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000))

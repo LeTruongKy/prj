@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,6 @@ export function EditCategoryModal({ open, onClose, onSuccess, category }: EditCa
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("EditCategoryModal useEffect - open:", open, "category:", category);
         if (open && category) {
             setName(category.name);
             setDescription(category.description || "");

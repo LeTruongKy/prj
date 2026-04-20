@@ -1,4 +1,4 @@
-import { apiClient } from '@/lib/api'
+﻿import { apiClient } from '@/lib/api'
 
 /**
  * Check-in via QR code with signature verification
@@ -30,7 +30,6 @@ async function trackCheckInInteractionInternal(activityId: number) {
     signature,
   })
   if (response) {
-      console.log('Tracking register interaction for activity:', activityId);
       trackCheckInInteractionInternal(activityId).catch((error) => {
         // Silently log, don't break response
         console.debug('[Registration Tracking] Failed to track register:', error.message);

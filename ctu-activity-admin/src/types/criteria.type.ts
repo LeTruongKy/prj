@@ -1,4 +1,4 @@
-export interface ICriteriaGroup {
+﻿export interface ICriteriaGroup {
   id: number;
   name: string;
   description?: string;

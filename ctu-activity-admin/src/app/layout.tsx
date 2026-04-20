@@ -1,10 +1,10 @@
-import { AuthProvider } from "@/providers/AuthProvider";
+﻿import { AuthProvider } from "@/providers/AuthProvider";
 import { ClientProviders } from "../providers/ClientProvider";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export const metadata = {
-  title: "CTU Activity Portal | Admin",
+  title: "LCHSVCT-CTU | Admin",
   description: "Student Activity Management System - Admin Dashboard",
 };
 

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
@@ -74,7 +74,6 @@ export default function CalendarPage() {
       const results = await Promise.allSettled(
         monthsToFetch.map(m => getUserCalendar(m.year, m.month))
       )
-      console.log('Fetched calendar data for multiple months:', results)
 
       // Current month data (always first)
       const currentMonthResult = results[0]

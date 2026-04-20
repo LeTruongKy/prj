@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -20,7 +20,6 @@ export default function CheckInPage() {
   const performCheckIn = async () => {
       try {
         // 1. Check if user is logged in
-        console.log('Checking authentication status:', isAuthenticated, user)
         if (!isAuthenticated) {
           // Not logged in - redirect to login with return URL
           const returnUrl = `/checkin?activityId=${activityId}&timestamp=${timestamp}&signature=${signature}`
@@ -29,7 +28,6 @@ export default function CheckInPage() {
         }
 
         // 2. Validate query params
-        console.log('Received QR data:', { activityId, timestamp, signature })
         if (!activityId || !timestamp || !signature) {
           setStatus('error')
           setMessage('QR code không hợp lệ: thiếu thông tin')

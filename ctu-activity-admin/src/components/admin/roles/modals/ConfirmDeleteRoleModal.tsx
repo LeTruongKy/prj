@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -69,17 +69,16 @@ export function ConfirmDeleteRoleModal({
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">
-            {hasUser ? "Chuyển người dùng & Xoá vai trò" : "Xác nhận xoá vai trò"}
+            {hasUser ? "Chỉnh sửa vai trò" : "Xác nhận xóa vai trò"}
           </DialogTitle>
           <DialogDescription>
             {hasUser ? (
               <span>
-                Vai trò <b>{roleName}</b> hiện đang được gán cho <b>{userCount}</b> người dùng. Bạn cần chuyển họ sang
-                một vai trò khác trước khi xoá.
+                Vai trò <b>{roleName}</b> hiện đang gán cho <b>{userCount}</b> Người dùng bạn hãy chuyển người dùng trước khi xoá.
               </span>
             ) : (
               <span>
-                Bạn có chắc muốn xoá vai trò <b>{roleName}</b> không? Thao tác này là Soft Delete, có thể khôi phục lại.
+                Bạn có muốn xóa vai trò <b>{roleName}</b> không? thao tác này là Soft Delete, có thể khôi phục.
               </span>
             )}
           </DialogDescription>
@@ -87,7 +86,7 @@ export function ConfirmDeleteRoleModal({
 
         {hasUser && (
           <div className="space-y-3 mt-4">
-            <Label>Chọn vai trò thay thế</Label>
+            <Label>Chọn thay vai trò khác</Label>
             <RadioGroup
               value={selectedRoleId?.toString() ?? ""}
               onValueChange={(value) => setSelectedRoleId(Number(value))}
@@ -110,14 +109,14 @@ export function ConfirmDeleteRoleModal({
 
         <div className="flex justify-end gap-3 mt-6">
           <Button variant="outline" onClick={onClose} disabled={loading}>
-            Huỷ
+            Hủy
           </Button>
           <Button
             className="bg-red-600 hover:bg-red-700 text-white cursor-pointer"
             onClick={handleConfirm}
             disabled={loading || (hasUser && !selectedRoleId)}
           >
-            {loading ? "Đang xử lý..." : hasUser ? "Chuyển & Xoá" : "Xoá"}
+            {loading ? "Đang xử lý..." : hasUser ? "Chuyển & Xóa" : "Xóa vai trò"}
           </Button>
         </div>
       </DialogContent>

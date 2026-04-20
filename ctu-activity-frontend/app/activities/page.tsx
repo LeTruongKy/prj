@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -80,12 +80,10 @@ export default function ActivitiesPage() {
         status: 'PUBLISHED',
         expand: 'category,unit',
       })
-      console.log('Fetched activities response:', data)
       // Handle nested data structure: response.data contains {data: [...], pagination: {...}}
       const activitiesData = data.data.data || []
       const activitiesArray = Array.isArray(activitiesData) ? activitiesData : []
       setActivities(activitiesArray)
-      console.log('Extracted activities array:', activitiesArray)
       setPagination(data.data.pagination || { page, limit: 10, total: 0, totalPages: 0 })
       setCurrentPage(page)
     } catch (err: any) {
@@ -302,19 +300,28 @@ export default function ActivitiesPage() {
                           {/* Meta Info */}
                           <div className="space-y-2 mb-5">
                             <div className="flex items-center gap-2 text-sm text-gray-500">
-                              <Clock className="w-4 h-4 text-blue-500 shrink-0" />
+                              <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                            <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
                               <span>
                                 {new Date(activity.start_time).toLocaleDateString('vi-VN')} - {new Date(activity.end_time).toLocaleDateString('vi-VN')}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-500">
-                              <MapPin className="w-4 h-4 text-blue-500 shrink-0" />
+                              <div className="w-7 h-7 rounded-lg bg-orange-50 flex items-center justify-center shrink-0">
+                            <svg className="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </div>
                               <span className="line-clamp-1">{activity.location || 'Đang cập nhật'}</span>
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                            {/* <div className="flex items-center gap-2 text-sm text-gray-500">
                               <Users className="w-4 h-4 text-blue-500 shrink-0" />
                               <span>{activity.registration_count || 0}/{activity.max_participants || '∞'} sinh viên</span>
-                            </div>
+                            </div> */}
                           </div>
 
                           {/* Register Button */}
@@ -326,7 +333,7 @@ export default function ActivitiesPage() {
                             <button
                               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl hover:shadow-md transition-all text-sm shadow-sm"
                             >
-                              Đăng ký
+                              Đăng ký ngay
                             </button>
                           )}
                         </CardContent>

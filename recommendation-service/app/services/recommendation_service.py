@@ -16,6 +16,7 @@ from app.models.database_models import (
     ActivityRegistration,
     UserActivitySchedule,
     ActivityCriteria,
+    UserActivityInteraction,
 )
 from app.config import settings
 import logging
@@ -62,11 +63,12 @@ class RecommendationService:
         tag_ids = [interest.tagId for interest in user_interests]
         weights = np.array([interest.weight for interest in user_interests], dtype=float)
 
-        # Normalize weights to 0-1 range
-        if weights.max() > 0:
-            weights_normalized = weights / weights.max()
-        else:
-            weights_normalized = weights
+        # Fixed Min-Max Normalization: convert weight (0-100) to (0-1)
+        MIN_WEIGHT = 0
+        MAX_WEIGHT = 100
+        
+        weights_normalized = (weights - MIN_WEIGHT) / (MAX_WEIGHT - MIN_WEIGHT)
+        weights_normalized = np.clip(weights_normalized, 0.0, 1.0)
 
         return weights_normalized, tag_ids
 
@@ -207,28 +209,29 @@ class RecommendationService:
 
     def _build_activity_co_occurrence_matrix(self) -> Dict[int, Dict[int, float]]:
         """
-        Build activity co-occurrence matrix from verified user registrations
+        Build activity co-occurrence matrix from user activity interactions
         If many users join both activity A and B, they are considered similar
+        Uses REGISTER and CHECK_IN events for more data than verified only
         
         Returns:
             Dictionary: {activity_id: {similar_activity_id: similarity_score}}
         """
         try:
-            # Query verified registrations for collaborative filtering
-            registrations = self.db.query(ActivityRegistration).filter(
-                ActivityRegistration.proofStatus == "VERIFIED"
+            # Query user interactions (REGISTER and CHECK_IN for collaborative filtering)
+            interactions = self.db.query(UserActivityInteraction).filter(
+                UserActivityInteraction.action.in_(["REGISTER", "CHECK_IN"])
             ).all()
             
-            if not registrations:
-                logger.warning("No verified registrations found for collaborative filtering")
+            if not interactions:
+                logger.warning("No interactions found for collaborative filtering")
                 return {}
             
             # Build user -> activities mapping
             user_activity_map = {}
-            for reg in registrations:
-                if reg.userId not in user_activity_map:
-                    user_activity_map[reg.userId] = set()
-                user_activity_map[reg.userId].add(reg.activityId)
+            for interaction in interactions:
+                if interaction.userId not in user_activity_map:
+                    user_activity_map[interaction.userId] = set()
+                user_activity_map[interaction.userId].add(interaction.activityId)
             
             # Build activity co-occurrence matrix
             # co_occurrence[A][B] = number of users who joined both A and B

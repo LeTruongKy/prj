@@ -1,4 +1,4 @@
-export interface IUnit {
+﻿export interface IUnit {
     id: number;
     name: string;
     type: "LCH" | "CH";

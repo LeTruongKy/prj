@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import {
@@ -49,7 +49,6 @@ export function UnitsTable() {
         setLoading(true);
         try {
             const res = await UnitService.CallFetchUnitsList();
-            console.log("fetchUnits res", res);
             if (res?.statusCode === 200 && Array.isArray(res.data?.data)) {
                 setUnitList(res.data.data);
             }

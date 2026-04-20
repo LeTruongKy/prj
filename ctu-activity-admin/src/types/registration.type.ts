@@ -1,4 +1,4 @@
-import { IActivity } from "./activity.type";
+﻿import { IActivity } from "./activity.type";
 import { IUser } from "./user.type";
 
 export type RegistrationStatus = "PENDING" | "APPROVED" | "REJECTED" | "CANCELLED";

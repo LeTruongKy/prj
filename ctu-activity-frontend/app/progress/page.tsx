@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { Loader, AlertCircle, CheckCircle, Circle, ChevronDown } from 'lucide-react'
@@ -86,7 +86,7 @@ const GroupCard = ({ group, isExpanded, onToggle }: { group: SV5TGroup; isExpand
       >
         <div className="p-6 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1">
-            <div className="text-3xl shrink-0">{icon}</div>
+            {/* <div className="text-3xl shrink-0">{icon}</div> */}
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-900 mb-1">{group.group_name}</h3>
               <p className="text-sm text-gray-600">{group.description}</p>
@@ -122,13 +122,13 @@ const GroupCard = ({ group, isExpanded, onToggle }: { group: SV5TGroup; isExpand
                 }`}
               >
                 {/* Icon */}
-                <div className="shrink-0 mt-0.5">
+                {/* <div className="shrink-0 mt-0.5">
                   {criterion.status === 'COMPLETED' ? (
                     <CheckCircle className="w-5 h-5 text-green-600" />
                   ) : (
                     <Circle className="w-5 h-5 text-gray-400" />
                   )}
-                </div>
+                </div> */}
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
@@ -183,10 +183,8 @@ export default function ProgressPage() {
     try {
       setLoading(true)
       setError(null)
-      console.log('[Progress] Fetching SV5T data from /users/me/sv5t/progress')
 
       const response = await apiClient.get(`/users/${user?.user.user_id}/sv5t/progress`)
-      console.log('[Progress] API Response:', response)
 
       // Extract from nested structure: response.data.data.data
       const sv5tProgressData = response.data?.data?.data || response.data?.data || null
@@ -196,7 +194,6 @@ export default function ProgressPage() {
       }
 
       setSv5tData(sv5tProgressData)
-      console.log('[Progress] SV5T Data loaded successfully')
     } catch (err: any) {
       console.error('[Progress] Error fetching SV5T:', err)
       const errorMsg =

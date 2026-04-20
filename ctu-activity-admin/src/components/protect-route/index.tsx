@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useAuthStore } from "@/stores/authStore";
 import { NotPermitted } from "./not-permitted";
@@ -6,7 +6,7 @@ import { useAppRouter } from "@/hooks/useAppRouter";
 import { useEffect } from "react";
 import { Loading } from "../shared/loading";
 
-// Allows all authenticated users — role-based page access handled at component level
+// Allows all authenticated users â€” role-based page access handled at component level
 export const RoleBaseRoute = ({ children }: { children: React.ReactNode }) => {
   const { authUser } = useAuthStore();
 

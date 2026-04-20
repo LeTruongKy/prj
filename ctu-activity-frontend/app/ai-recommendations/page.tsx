@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { Loader, AlertCircle } from 'lucide-react'
@@ -39,7 +39,6 @@ export default function AiRecommendationsPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    console.log('[AI Recs] Component mounted. Checking authentication...', isAuthenticated , user)
     if (isAuthenticated) {
       fetchRecommendations()
     } else {

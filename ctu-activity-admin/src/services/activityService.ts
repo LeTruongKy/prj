@@ -1,4 +1,4 @@
-import privateAxios from "@/lib/axios/privateAxios";
+﻿import privateAxios from "@/lib/axios/privateAxios";
 import { IBackendRes } from "@/types/backend.type";
 import { IActivity, ModalActivityData } from "@/types/activity.type";
 
@@ -11,7 +11,7 @@ export const ActivityService = {
         return privateAxios.post("/activities", data);
     },
 
-    // ✅ NEW: Create activity with file upload (FormData)
+    // âœ… NEW: Create activity with file upload (FormData)
     CallCreateActivityWithFile: (formData: FormData): Promise<IBackendRes<IActivity>> => {
         return privateAxios.post("/activities", formData, {
             headers: {
@@ -28,7 +28,7 @@ export const ActivityService = {
         return privateAxios.patch(`/activities/${id}`, payload);
     },
 
-    // ✅ NEW: Update activity with file upload (FormData)
+    // âœ… NEW: Update activity with file upload (FormData)
     CallUpdateActivityWithFile: (id: number, formData: FormData): Promise<IBackendRes<IActivity>> => {
         return privateAxios.patch(`/activities/${id}`, formData, {
             headers: {

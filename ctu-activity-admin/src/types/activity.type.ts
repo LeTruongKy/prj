@@ -1,4 +1,4 @@
-import { IActivityCategory } from "./activityCategory.type";
+﻿import { IActivityCategory } from "./activityCategory.type";
 import { IUnit } from "./unit.type";
 import { IUser } from "./user.type";
 
@@ -16,7 +16,7 @@ export interface IActivity {
     createdBy?: string;
     creator?: IUser;
     location: string | null;
-    // ✅ Supports both camelCase (Cloudinary) and snake_case (API fallback)
+    // âœ… Supports both camelCase (Cloudinary) and snake_case (API fallback)
     posterUrl?: string | null;
     poster_url?: string | null;
     startTime?: string | null;
@@ -39,7 +39,9 @@ export interface IActivity {
     registration_count?: number;
     similarity_score?: number;
     tags?: any[];
-    // ✅ QR Code URL for check-in
+    tagIds?: number[];
+    criteriaIds?: number[];
+    // âœ… QR Code URL for check-in
     qrCodeUrl?: string | null;
     qr_code_url?: string | null;
 }

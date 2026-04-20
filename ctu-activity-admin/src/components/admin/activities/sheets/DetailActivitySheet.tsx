@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -190,9 +190,9 @@ export function DetailActivitySheet({ open, onOpenChange, activity, loading }: D
 
                                     <Button
                                         onClick={() =>{
-                                            console.log('Opening QR Modal with URL:', activity.qrCodeUrl);
+console.log('Opening QR Modal with URL:', activity.qrCodeUrl);
                                              setQrModalOpen(true)
-                                             console.log('QR Modal open state:', qrModalOpen)
+console.log('QR Modal open state:', qrModalOpen)
                                         }}
                                         variant="outline"
                                         className="w-full gap-2 border-blue-300 text-blue-700 hover:bg-blue-50 hover:text-blue-800"

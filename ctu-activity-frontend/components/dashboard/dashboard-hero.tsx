@@ -37,7 +37,7 @@ export default function DashboardHero() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 backdrop-blur-sm border text-sm font-semibold px-4 py-2 rounded-full" style={{ background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(147, 51, 234, 0.08) 100%)', borderColor: 'rgba(37, 99, 235, 0.2)', color: 'rgb(37, 99, 235)' }}>
               <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'linear-gradient(to right, rgb(37, 99, 235), rgb(147, 51, 234))' }} />
-              Liên Chi Hội Sinh Viên CTU
+              Liên Chi Hội Sinh Viên Cân Thơ
             </div>
 
             {/* Title */}
@@ -57,22 +57,20 @@ export default function DashboardHero() {
 
             {/* Description */}
             <p className="text-base sm:text-lg leading-relaxed max-w-xl" style={{ color: 'rgb(107, 114, 128)' }}>
-              Tham gia hoạt động, tích lũy điểm rèn luyện và phát triển kỹ năng toàn diện
-              thông qua hệ thống quản lý thông minh dành riêng cho sinh viên Đại học Cần Thơ.
+              Tham gia hoạt động, tích lũy tiêu chí rèn luyện và phát triển kỹ năng toàn diện
+              thông qua hệ thống quản lý thông minh dành riêng cho sinh viên Liên Chi Hội Sinh Viên Cần Thơ.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <Link href="/activities" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold px-8 py-5 rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 transition-all duration-300 text-base flex items-center gap-2">
+                <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold px-8 py-6 rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 transition-all duration-300 text-base flex items-center gap-2">
                   Khám phá hoạt động
-                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link href="#activities" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto backdrop-blur-sm border-2 font-bold px-8 py-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-base flex items-center gap-2 hover:opacity-90" style={{ background: 'transparent', borderColor: 'rgba(37, 99, 235, 0.3)', color: 'rgb(37, 99, 235)' }}>
+                <Button className="w-full sm:w-auto backdrop-blur-sm border-2 font-bold px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-base flex items-center gap-2 hover:opacity-90" style={{ background: 'transparent', borderColor: 'rgba(37, 99, 235, 0.3)', color: 'rgb(37, 99, 235)' }}>
                   Tìm hiểu thêm
-                  <ChevronRight className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
@@ -84,19 +82,15 @@ export default function DashboardHero() {
               {/* Glow ring */}
               <div className="absolute inset-0 rounded-3xl blur-2xl scale-110" style={{ background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)' }} />
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-black" style={{ border: '4px solid rgba(37, 99, 235, 0.2)' }}>
-                {/* Local Video Player */}
-                <video
-                  width="100%"
-                  height="314"
-                  controls
-                  autoPlay
-                  muted
-                  loop
-                  className="w-full h-full object-cover rounded-3xl"
-                >
-                  <source src="/clip.mp4" type="video/mp4" />
-                  Trình duyệt của bạn không hỗ trợ thẻ video.
-                </video>
+                {/* YouTube Video Player */}
+                <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '24px' }}>
+                  <iframe
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', borderRadius: '24px' }}
+                    src="https://www.youtube.com/embed/pV7VWJhFEzA?autoplay=1&mute=1&start=0&end=11&controls=0&fs=0&modestbranding=1&loop=1&playlist=pV7VWJhFEzA&rel=0&showinfo=0&iv_load_policy=3"
+                    title="CAN THO UNIVERSITY"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  />
+                </div>
               </div>
             </div>
           </div>

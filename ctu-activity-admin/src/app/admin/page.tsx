@@ -48,8 +48,8 @@ export default function AdminDashboard() {
           UnitService.CallFetchUnitsList(),
           ActivityCategoryService.CallFetchCategoriesList()
         ]);
-
-        const activities = Array.isArray(actRes?.data) ? actRes.data : [];
+        console.log("Dashboard data:", { actRes, userRes, unitRes, catRes });
+        const activities = Array.isArray(actRes?.data.data) ? actRes?.data.data : [];
 
         setStats({
           totalActivities: activities.length,
@@ -208,7 +208,7 @@ export default function AdminDashboard() {
               ) : recentActivities.length > 0 ? (
                 recentActivities.map((activity) => (
                   <div
-                    key={activity.id}
+                    key={activity.activity_id}
                     className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0 flex-1">

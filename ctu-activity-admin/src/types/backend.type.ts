@@ -1,4 +1,4 @@
-export interface IBackendRes<T> {
+﻿export interface IBackendRes<T> {
   statusCode: number;
   message: string;
   data?: T;

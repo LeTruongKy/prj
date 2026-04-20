@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
+import { useToast } from '@/hooks/use-toast'
 interface LoginFormProps {
   returnUrl?: string | null
 }
@@ -35,6 +36,7 @@ export default function LoginForm({ returnUrl }: LoginFormProps) {
   const router = useRouter()
   const { login, isLoading, error, clearError } = useAuthStore()
   const [showPassword, setShowPassword] = useState(false)
+  const { toast } = useToast()
 
   const {
     register,
@@ -45,11 +47,15 @@ export default function LoginForm({ returnUrl }: LoginFormProps) {
   })
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log('Submitting login form with data:', data)
     clearError()
 
     try {
       await login(data.email, data.password)
+      toast({
+        title: 'Thành công!',
+        description: 'Đăng nhập thành công',
+        variant: 'default',
+      })
       // Redirect to activities on success
       if (returnUrl) {
       router.push(decodeURIComponent(returnUrl))
@@ -59,6 +65,11 @@ export default function LoginForm({ returnUrl }: LoginFormProps) {
     } catch (error) {
       // Error is already stored in the store
       console.error('Login error:', error)
+      toast({
+        title: 'Lỗi!',
+        description: error instanceof Error ? error.message : 'Đăng nhập thất bại',
+        variant: 'destructive',
+      })
     }
   }
 

@@ -26,8 +26,7 @@ export default function AdminHeader() {
   const haneleLogOut = async () => {
     try {
       const res = await authService.callLogout();
-
-      if (res && res.statusCode === 200) {
+      if (res) {
         goLogin();
         toast.success(AuthMessage.logoutSuccess);
         logOutAction();
