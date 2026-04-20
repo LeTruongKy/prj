@@ -223,7 +223,7 @@ export function CreateActivityForm({ onSuccess }: CreateActivityFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>MMô tả</FormLabel>
+              <FormLabel>Mô tả</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Nhập mô tả chi tiết về hoạt động"

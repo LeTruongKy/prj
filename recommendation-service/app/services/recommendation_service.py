@@ -221,11 +221,9 @@ class RecommendationService:
             interactions = self.db.query(UserActivityInteraction).filter(
                 UserActivityInteraction.action.in_(["REGISTER", "CHECK_IN"])
             ).all()
-            
             if not interactions:
                 logger.warning("No interactions found for collaborative filtering")
                 return {}
-            
             # Build user -> activities mapping
             user_activity_map = {}
             for interaction in interactions:
@@ -248,7 +246,7 @@ class RecommendationService:
                         if activity_b not in co_occurrence[activity_a]:
                             co_occurrence[activity_a][activity_b] = 0
                         co_occurrence[activity_a][activity_b] += 1
-            
+            # logger.info(f"Raw co-occurrence matrix built with {co_occurrence} activities")
             # Normalize co-occurrence scores to 0-1 range
             if co_occurrence:
                 max_co_occurrence = max(
@@ -344,7 +342,6 @@ class RecommendationService:
                 # Conflict if: activity.startTime < schedule.endTime AND activity.endTime > schedule.startTime
                 if (activity.startTime < schedule.endTime and 
                     activity.endTime > schedule.startTime):
-                    logger.info(f"Schedule conflict detected for user {user_id} with activity {activity.id}")
                     return True
             
             return False

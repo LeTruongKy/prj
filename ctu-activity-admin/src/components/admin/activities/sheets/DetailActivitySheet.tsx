@@ -77,7 +77,7 @@ export function DetailActivitySheet({ open, onOpenChange, activity, loading }: D
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent className="w-full sm:max-w-4xl overflow-y-auto">
+            <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
                 <SheetHeader className="flex flex-row items-start justify-between space-y-0">
                     <div className="flex-1 pr-8">
                         <SheetTitle>Chi tiết Hoạt động</SheetTitle>

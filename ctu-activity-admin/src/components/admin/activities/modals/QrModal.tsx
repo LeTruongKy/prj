@@ -14,33 +14,6 @@ interface QrModalProps {
   activityTitle: string
 }
 
-/**
- * QR Code Modal Component for Admin Dashboard
- * 
- * EXPLANATION:
- * ============
- * 
- * WHY URL IS NOT QR CODE:
- * - Backend generates: https://abc.ngrok.app/checkin?activityId=1&...
- * - This is a TEXT URL, not an image
- * - Student phone camera cannot scan text URLs
- * - We need to convert URL → QR image for scanning
- * 
- * WHY FRONTEND RENDERS QR:
- * - QR encoding requires client-side computation
- * - react-qr-code library handles: URL → QR algorithm → SVG image
- * - Backend only provides URL data
- * - Frontend responsible for: validation, rendering, display
- * - This keeps backend simple and lightweight
- * 
- * FLOW:
- * 1. Backend: generates qrCodeUrl (text)
- * 2. Admin: clicks "Hiển thị QR Code" button
- * 3. Frontend Dialog opens with qrCodeUrl
- * 4. react-qr-code: converts URL → QR image
- * 5. Admin: shows QR to students
- * 6. Student: scans with phone camera → opens checkin page
- */
 export function QrModal({
   open,
   onOpenChange,
@@ -84,29 +57,29 @@ export function QrModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="max-w-xs">
         <DialogHeader>
-          <DialogTitle>QR Code Điểm Danh</DialogTitle>
-          <DialogDescription>
-            Sinh viên quét mã QR này để verify tham gia hoạt động
+          <DialogTitle className="text-lg">QR Code Điểm Danh</DialogTitle>
+          <DialogDescription className="text-xs">
+            Quét mã để verify tham gia
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-3">
           {/* Activity Title */}
           <div>
-            <p className="text-sm font-medium text-gray-500 mb-2">Hoạt động</p>
-            <p className="text-base font-semibold text-gray-900">{activityTitle}</p>
+            <p className="text-xs font-medium text-gray-500 mb-1">Hoạt động</p>
+            <p className="text-sm font-semibold text-gray-900 line-clamp-2">{activityTitle}</p>
           </div>
 
           {/* QR Code Display - Center */}
-          <div className="flex justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200">
-            <div className="bg-white p-4 rounded-lg shadow-md">
+          <div className="flex justify-center p-2 bg-gray-50 rounded border border-gray-200">
+            <div className="bg-white p-2 rounded shadow-sm">
               <QRCode
                 value={qrCodeUrl}
-                size={256}
+                size={160}
                 level="H"
-                includeMargin={true}
+                // includeMargin={true}
                 fgColor="#000000"
                 bgColor="#ffffff"
               />
@@ -114,49 +87,41 @@ export function QrModal({
           </div>
 
           {/* Instructions */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm font-medium text-blue-900 mb-2">📱 Hướng dẫn</p>
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>✓ Hiển thị mã QR này trên màn hình hoặc máy chiếu</li>
-              <li>✓ Sinh viên dùng camera điện thoại quét mã</li>
-              <li>✓ Hệ thống tự động verify tham gia hoạt động</li>
+          <div className="bg-blue-50 border border-blue-200 rounded p-2">
+            <p className="text-xs font-medium text-blue-900 mb-1">📱 Hướng dẫn</p>
+            <ul className="text-xs text-blue-800 space-y-0.5">
+              <li>✓ Hiển thị mã QR trên màn hình</li>
+              <li>✓ Sinh viên quét mã bằng camera</li>
+              <li>✓ Hệ thống tự động verify</li>
             </ul>
           </div>
 
           {/* URL Display (Copyable) */}
-          <div className="space-y-2">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">URL QR</p>
-            <div className="flex items-center gap-2">
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">URL</p>
+            <div className="flex items-center gap-1">
               <input
                 type="text"
                 value={qrCodeUrl}
                 readOnly
-                className="flex-1 px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded font-mono text-gray-600 truncate"
+                className="flex-1 px-2 py-1 text-xs bg-gray-50 border border-gray-200 rounded font-mono text-gray-600 truncate"
               />
               <Button
                 size="sm"
                 variant="outline"
                 onClick={handleCopyUrl}
-                className="flex-shrink-0"
+                className="flex-shrink-0 h-8 w-8 p-0"
               >
-                <Copy className="w-4 h-4" />
+                <Copy className="w-3 h-3" />
               </Button>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t">
-            {/* <Button
-              onClick={handleDownloadQr}
-              variant="outline"
-              className="flex-1"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Tải QR
-            </Button> */}
+          <div className="flex gap-2 pt-2 border-t">
             <Button
               onClick={() => onOpenChange(false)}
-              className="flex-1"
+              className="flex-1 h-8 text-sm"
             >
               Đóng
             </Button>

@@ -224,6 +224,7 @@ export default function ProfilePage() {
 
       // Fetch profile
       const profileRes = await apiClient.get('/users/me/profile')
+      console.log('[Profile] Fetched profile data:', profileRes)
       const profileData = profileRes.data.data?.user || profileRes.data.user || profileRes.data
       setProfile(profileData)
       setEditData({
@@ -253,8 +254,9 @@ export default function ProfilePage() {
     try {
       // Fetch all tags
       const tagsRes = await TagService.CallFetchAllTags()
+      console.log('[Profile] Fetched all tags:', tagsRes)
       if (tagsRes?.statusCode === 200) {
-        setAllTags(tagsRes.data.data || [])
+        setAllTags(tagsRes?.data?.data || tagsRes?.data || [])
       }
 
       // Fetch user interests
@@ -281,8 +283,10 @@ export default function ProfilePage() {
       const res = await UserInterestService.CallUpdateUserInterests({
         tagIds: selectedInterestIds,
       })
+      console.log('[Profile] Update interests response:', res)
       if (res?.statusCode === 200 || res?.statusCode === 201) {
-        setUserInterests(res.data || [])
+        // setUserInterests(res.data.interests || [])
+        await fetchInterests()
         setEditingInterests(false)
         setError(null)
       }
@@ -405,9 +409,12 @@ export default function ProfilePage() {
                 currentAvatarUrl={profile.avatarUrl}
                 size="md"
                 clickable
-                onSuccess={() => {
-                  fetchProfileData()
-                }}
+                // onSuccess={() => {
+                //   fetchProfileData()
+                // }}
+                onSuccess={(newAvatarUrl) => {
+    setProfile(prev => prev ? { ...prev, avatarUrl: newAvatarUrl } : null)
+  }}
               />
               {/* Online indicator */}
               <div className="absolute bottom-2 right-2 w-5 h-5 bg-green-500 rounded-full border-[3px] border-white" />

@@ -12,10 +12,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Loader2, Upload, X } from "lucide-react";
 import { IActivity } from "@/types/activity.type";
 import { ActivityService } from "@/services/activityService";
+import { ActivityCategoryService } from "@/services/activityCategoryService";
+import { TagSelector } from "@/components/common/TagSelector";
+import { CriteriaSelector } from "@/components/common/CriteriaSelector";
 import { toast } from "sonner";
+import { IActivityCategory } from "@/types/activityCategory.type";
 
 interface EditActivitySheetProps {
     open: boolean;
@@ -37,9 +48,17 @@ export function EditActivitySheet({
         title: "",
         description: "",
         location: "",
+        categoryId: undefined as number | undefined,
+        startTime: "",
+        endTime: "",
+        maxParticipants: 30,
     });
     const [posterPreview, setPosterPreview] = useState<string>("");
     const [posterFile, setPosterFile] = useState<File | null>(null);
+    const [tagIds, setTagIds] = useState<number[]>([]);
+    const [criteriaIds, setCriteriaIds] = useState<number[]>([]);
+    const [categories, setCategories] = useState<IActivityCategory[]>([]);
+    const [loadingCategories, setLoadingCategories] = useState(false);
 
     useEffect(() => {
         if (open && activity) {
@@ -47,11 +66,35 @@ export function EditActivitySheet({
                 title: activity.title || "",
                 description: activity.description || "",
                 location: activity.location || "",
+                categoryId: activity.categoryId || activity.category_id,
+                startTime: activity.startTime ? new Date(activity.startTime).toISOString().slice(0, 16) : "",
+                endTime: activity.endTime ? new Date(activity.endTime).toISOString().slice(0, 16) : "",
+                maxParticipants: activity.maxParticipants || 30,
             });
             setPosterPreview(activity.poster_url || activity.posterUrl || PLACEHOLDER_IMAGE);
             setPosterFile(null);
+            setTagIds(activity.tagIds || []);
+            setCriteriaIds(activity.criteriaIds || []);
+
+            // Fetch categories
+            fetchCategories();
         }
     }, [open, activity]);
+
+    const fetchCategories = async () => {
+        try {
+            setLoadingCategories(true);
+            const categoryRes = await ActivityCategoryService.CallFetchCategoriesList();
+            if (categoryRes?.statusCode === 200 && Array.isArray(categoryRes.data)) {
+                setCategories(categoryRes.data);
+            }
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+            toast.error("Không thể tải danh sách loại hoạt động");
+        } finally {
+            setLoadingCategories(false);
+        }
+    };
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -59,7 +102,14 @@ export function EditActivitySheet({
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: name === "categoryId" || name === "maxParticipants" ? parseInt(value) || undefined : value,
+        }));
+    };
+
+    const handleSelectChange = (name: string, value: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: name === "categoryId" ? parseInt(value) : value,
         }));
     };
 
@@ -90,40 +140,55 @@ export function EditActivitySheet({
         try {
             const activityId = activity.activity_id || activity.id;
             
-            // If poster file changed, use FormData to upload with image
+            // Always use FormData to handle file upload properly
+            const formDataWithFile = new FormData();
+            formDataWithFile.append("title", formData.title);
+            formDataWithFile.append("description", formData.description);
+            formDataWithFile.append("location", formData.location);
+            
+            if (formData.categoryId) {
+                formDataWithFile.append("categoryId", String(formData.categoryId));
+            }
+            
+            if (formData.startTime) {
+                formDataWithFile.append("startTime", new Date(formData.startTime).toISOString());
+            }
+            
+            if (formData.endTime) {
+                formDataWithFile.append("endTime", new Date(formData.endTime).toISOString());
+            }
+            
+            if (formData.maxParticipants) {
+                formDataWithFile.append("maxParticipants", String(formData.maxParticipants));
+            }
+
+            // Append file if selected
             if (posterFile) {
-                const formDataWithFile = new FormData();
-                formDataWithFile.append("title", formData.title);
-                formDataWithFile.append("description", formData.description);
-                formDataWithFile.append("location", formData.location);
                 formDataWithFile.append("file", posterFile);
+            }
 
-                const res = await ActivityService.CallUpdateActivityWithFile(activityId as number, formDataWithFile);
+            // Append tag IDs if any
+            if (tagIds && tagIds.length > 0) {
+                tagIds.forEach((id) => {
+                    formDataWithFile.append("tagIds", String(id));
+                });
+            }
 
-                if (res?.statusCode === 200) {
-                    toast.success("Cập nhật hoạt động thành công");
-                    onOpenChange(false);
-                    onActivityUpdated?.();
-                } else {
-                    toast.error(res?.message || "Cập nhật thất bại");
-                }
+            // Append criteria IDs if any
+            if (criteriaIds && criteriaIds.length > 0) {
+                criteriaIds.forEach((id) => {
+                    formDataWithFile.append("criteriaIds", String(id));
+                });
+            }
+
+            const res = await ActivityService.CallUpdateActivityWithFile(activityId as number, formDataWithFile);
+
+            if (res?.statusCode === 200) {
+                toast.success("Cập nhật hoạt động thành công");
+                onOpenChange(false);
+                onActivityUpdated?.();
             } else {
-                // No image change, just update text fields
-                const updateData = {
-                    title: formData.title,
-                    description: formData.description,
-                    location: formData.location,
-                };
-
-                const res = await ActivityService.CallUpdateActivity(activityId as number, updateData);
-
-                if (res?.statusCode === 200) {
-                    toast.success("Cập nhật hoạt động thành công");
-                    onOpenChange(false);
-                    onActivityUpdated?.();
-                } else {
-                    toast.error(res?.message || "Cập nhật thất bại");
-                }
+                toast.error(res?.message || "Cập nhật thất bại");
             }
         } catch (error) {
             console.error("Error updating activity:", error);
@@ -137,15 +202,60 @@ export function EditActivitySheet({
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent>
+            <SheetContent className="w-full sm:max-w-xl overflow-y-auto p-2">
                 <SheetHeader>
                     <SheetTitle>Chỉnh sửa hoạt động</SheetTitle>
                     <SheetDescription>
                         Cập nhật thông tin chi tiết của "{activity.title}"
                     </SheetDescription>
                 </SheetHeader>
+                <div className="space-y-2 mt-2">
+                    {/* Title */}
+                    <div>
+                        <Label htmlFor="title" className="text-sm font-medium">
+                            Tiêu đề hoạt động *
+                        </Label>
+                        <Input
+                            id="title"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleInputChange}
+                            placeholder="Nhập tiêu đề hoạt động"
+                            className="mt-1"
+                        />
+                    </div>
 
-                <div className="space-y-6 mt-6">
+                    {/* Description */}
+                    <div>
+                        <Label htmlFor="description" className="text-sm font-medium">
+                            Mô tả
+                        </Label>
+                        <Textarea
+                            id="description"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                            placeholder="Nhập mô tả hoạt động"
+                            rows={4}
+                            className="mt-1"
+                        />
+                    </div>
+
+                    {/* Location */}
+                    <div>
+                        <Label htmlFor="location" className="text-sm font-medium">
+                            Địa điểm
+                        </Label>
+                        <Input
+                            id="location"
+                            name="location"
+                            value={formData.location}
+                            onChange={handleInputChange}
+                            placeholder="Nhập địa điểm hoạt động"
+                            className="mt-1"
+                        />
+                    </div>
+
                     {/* Poster Image */}
                     <div>
                         <Label className="text-sm font-medium mb-3 block">
@@ -201,49 +311,105 @@ export function EditActivitySheet({
                         </div>
                     </div>
 
-                    {/* Title */}
+                    {/* Category */}
                     <div>
-                        <Label htmlFor="title" className="text-sm font-medium">
-                            Tiêu đề hoạt động *
+                        <Label htmlFor="categoryId" className="text-sm font-medium">
+                            Loại hoạt động
                         </Label>
-                        <Input
-                            id="title"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleInputChange}
-                            placeholder="Nhập tiêu đề hoạt động"
-                            className="mt-1"
+                        <Select
+                            value={formData.categoryId ? String(formData.categoryId) : ""}
+                            onValueChange={(value) => handleSelectChange("categoryId", value)}
+                            disabled={isSaving || loadingCategories}
+                        >
+                            <SelectTrigger className="mt-1">
+                                <SelectValue placeholder="Chọn loại hoạt động" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {loadingCategories ? (
+                                    <div className="p-2 text-center text-sm text-muted-foreground">
+                                        Đang tải...
+                                    </div>
+                                ) : categories.length > 0 ? (
+                                    categories.map((cat) => (
+                                        <SelectItem key={cat.category_id} value={String(cat.category_id)}>
+                                            {cat.name}
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    <div className="p-2 text-center text-sm text-muted-foreground">
+                                        Không có loại hoạt động
+                                    </div>
+                                )}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Tags */}
+                    <div>
+                        <Label className="text-sm font-medium">Tags</Label>
+                        <TagSelector
+                            selectedTagIds={tagIds}
+                            onChange={setTagIds}
+                            disabled={isSaving}
                         />
                     </div>
 
-                    {/* Description */}
+                    {/* Criteria */}
                     <div>
-                        <Label htmlFor="description" className="text-sm font-medium">
-                            Mô tả
-                        </Label>
-                        <Textarea
-                            id="description"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            placeholder="Nhập mô tả hoạt động"
-                            rows={4}
-                            className="mt-1"
+                        <Label className="text-sm font-medium">Tiêu chí SV5T</Label>
+                        <CriteriaSelector
+                            selectedCriteriaIds={criteriaIds}
+                            onChange={setCriteriaIds}
+                            disabled={isSaving}
                         />
                     </div>
 
-                    {/* Location */}
+                    {/* Max Participants */}
                     <div>
-                        <Label htmlFor="location" className="text-sm font-medium">
-                            Địa điểm
+                        <Label htmlFor="maxParticipants" className="text-sm font-medium">
+                            Số lượng tối đa
                         </Label>
                         <Input
-                            id="location"
-                            name="location"
-                            value={formData.location}
+                            id="maxParticipants"
+                            name="maxParticipants"
+                            type="number"
+                            value={formData.maxParticipants}
                             onChange={handleInputChange}
-                            placeholder="Nhập địa điểm hoạt động"
+                            placeholder="Nhập số lượng tối đa"
                             className="mt-1"
+                            disabled={isSaving}
+                        />
+                    </div>
+
+                    {/* Start Time */}
+                    <div>
+                        <Label htmlFor="startTime" className="text-sm font-medium">
+                            Thời gian bắt đầu
+                        </Label>
+                        <Input
+                            id="startTime"
+                            name="startTime"
+                            type="datetime-local"
+                            value={formData.startTime}
+                            onChange={handleInputChange}
+                            className="mt-1"
+                            disabled={isSaving}
+                        />
+                    </div>
+
+                    {/* End Time */}
+                    <div>
+                        <Label htmlFor="endTime" className="text-sm font-medium">
+                            Thời gian kết thúc
+                        </Label>
+                        <Input
+                            id="endTime"
+                            name="endTime"
+                            type="datetime-local"
+                            value={formData.endTime}
+                            onChange={handleInputChange}
+                            className="mt-1"
+                            disabled={isSaving}
                         />
                     </div>
 

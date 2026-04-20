@@ -55,7 +55,7 @@ export default function AdminDashboard() {
           totalActivities: activities.length,
           pendingActivities: activities.filter(a => a.status === "PENDING").length,
           totalStudents: Array.isArray(userRes?.data) ? userRes.data.length : 0,
-          totalUnits: Array.isArray(unitRes?.data) ? unitRes.data.length : 0
+          totalUnits: Array.isArray(unitRes?.data.data) ? unitRes.data.data.length : 0
         });
 
         // Get latest 5 activities
